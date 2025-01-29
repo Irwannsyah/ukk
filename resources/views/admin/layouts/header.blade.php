@@ -154,7 +154,7 @@
                       </a>
                   </li>
                   <li class="nav-item">
-                      <a href="{{ asset('category/list') }}" class="nav-link @if(Request::segment(2) == 'category') active @endif">
+                      <a href="{{ url('admin/category/list') }}" class="nav-link @if(Request::segment(2) == 'category') active @endif">
                           <i class="nav-icon fa fa-list-alt"></i>
                           <p>
                               Category
@@ -162,7 +162,7 @@
                       </a>
                   </li>
                   <li class="nav-item">
-                      <a href="{{ asset('admin/list') }}" class="nav-link @if(Request::segment(2) == 'product') active @endif">
+                      <a href="{{ asset('admin/product/list') }}" class="nav-link @if(Request::segment(2) == 'product') active @endif">
                           <i class="nav-icon fa fa-list-alt"></i>
                           <p>
                               Product
