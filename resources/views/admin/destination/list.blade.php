@@ -12,7 +12,7 @@
                         <h1>Destination List</h1>
                     </div>
                     <div class="col-sm-6" style="text-align: right">
-                        <a href="{{ route('category.add') }}" class="btn btn-primary">Add New Destination</a>
+                        <a href="{{ route('destination.add') }}" class="btn btn-primary">Add New Destination</a>
                     </div>
                 </div>
             </div>
@@ -60,7 +60,7 @@
                                                 <td>{{ $value->status == 0 ? 'Open' : 'Closed' }}</td>
                                                 <td>{{ date('d-m-Y', strtotime($value->created_at)) }}</td>
                                                 <td>
-                                                    <a href="{{ url('admin/admin/edit/' . $value->id) }}"
+                                                    <a href="{{ url('admin/destination/edit/' . $value->id) }}"
                                                         class="btn btn-warning">Edit</a>
                                                     <a href="{{ url('admin/admin/delete/' . $value->id) }}"
                                                         class="btn btn-danger">Delete</a>

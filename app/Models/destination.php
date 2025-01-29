@@ -33,4 +33,8 @@ class destination extends Model
     {
         return $this->belongsTo(category::class, 'category_id');
     }
+
+    static public function getSingle($id){
+        return self::find($id);
+    }
 }

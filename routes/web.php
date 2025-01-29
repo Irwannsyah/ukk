@@ -42,6 +42,10 @@ Route::group(['middleware' => 'adminCheck'], function() {
     });
 
     Route::as('destination.')->group(function(){
-    Route::get('admin/destination/list', [DestinationController::class, 'list'])->name('list');
+        Route::get('admin/destination/list', [DestinationController::class, 'list'])->name('list');
+        Route::get('admin/destination/add', [DestinationController::class, 'add'])->name('add');
+        Route::post('admin/destination/add', [DestinationController::class, 'insert'])->name('insert');
+        Route::get('admin/destination/edit/{id}', [DestinationController::class, 'edit'])->name('edit');
+        Route::post('admin/destination/edit/{id}', [DestinationController::class, 'update'])->name('update');
     });
 });

@@ -162,10 +162,10 @@
                       </a>
                   </li>
                   <li class="nav-item">
-                      <a href="{{ asset('admin/product/list') }}" class="nav-link @if(Request::segment(2) == 'product') active @endif">
-                          <i class="nav-icon fa fa-list-alt"></i>
+                      <a href="{{ asset('admin/destination/list') }}" class="nav-link @if(Request::segment(2) == 'destination') active @endif">
+                          <i class="nav-icon fa fa-mountain"></i>
                           <p>
-                              Product
+                              Destination
                           </p>
                       </a>
                   </li>
