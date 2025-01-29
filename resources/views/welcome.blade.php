@@ -7,6 +7,5 @@
     <title>Document</title>
 </head>
 <body>
-    <p>asdasd{{ Auth::user()->name }}</p>
 </body>
 </html>

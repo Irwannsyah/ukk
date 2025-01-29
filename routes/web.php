@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\admin\AdminController as AdminAdminController;
 use App\Http\Controllers\admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
@@ -22,8 +23,8 @@ Route::get('/', function () {
 Route::group(['middleware' => 'adminCheck'], function() {
     Route::as('admin.')->group(function() {
         Route::get('admin/dashboard', [AdminDashboardController::class, 'dashboard'])->name('dashboard');
-        Route::get('admin/user/list', [AdminAdminController::class, 'list'])->name('list');
-        Route::get('admin/admin/delete/{id}', [AdminAdminController::class, 'delete'])->name('delete');
+        Route::get('admin/user/list', [UserController::class, 'list'])->name('list');
+        Route::get('admin/user/delete/{id}', [UserController::class, 'delete'])->name('delete');
         Route::get('logout', [AuthController::class, 'logout'])->name('logout');
     });
 });

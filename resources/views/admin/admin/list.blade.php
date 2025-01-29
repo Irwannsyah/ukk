@@ -33,6 +33,8 @@
                                             <th>#</th>
                                             <th>Name</th>
                                             <th>Email</th>
+                                            <th>Role</th>
+                                            <th>Phone</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -42,6 +44,8 @@
                                                 <td>{{ $value->id }}</td>
                                                 <td>{{ $value->name }}</td>
                                                 <td>{{ $value->email }}</td>
+                                                <td>{{ $value->role }}</td>
+                                                <td>{{ $value->phone }}</td>
                                                 <td>
                                                     <a href="{{ url('admin/admin/delete/' . $value->id) }}"
                                                         class="btn btn-danger">Delete</a>

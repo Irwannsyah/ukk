@@ -12,7 +12,7 @@ class AuthController extends Controller
 {
     public function login()
     {
-        if(Auth::check() && Auth::user()->role = 'admin'){
+        if(Auth::check() && Auth::admin()->role = 'admin'){
             return view('admin.dashboard');
         }else{
             return view('admin.auth.login');
@@ -25,7 +25,7 @@ class AuthController extends Controller
 
     public function admin_auth_login(Request $request){
         $remember = !empty($request->remember) ? true : false;
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password, 'role' => 'admin'], $remember)){
+        if(Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password,], $remember)){
             return redirect()->route('admin.dashboard');
         }else{
             return redirect()->back()->with('error', 'Please enter the correct account');
