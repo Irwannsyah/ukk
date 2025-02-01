@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+.dropdown-item li a{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+}
+/* .dropdown-item li:hover{
+    background-color: gray;
+} */
+
+.dropdown-item li span{
+    font-weight: 500;
+}
+
+.rotate{
+    transform: rotate(180deg);
+    transition:transform 0.3s ease-in-out;
+}
+.banner h4{
+    font-size: 20px;
+    font-weight: 600;
+    color: rgb(31, 30, 30);
+}
+
+body{
+    background-color: rgb(247, 247, 247);
+}
+
+.owl-dots {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.owl-nav {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    z-index: 80;
+}
+
+button .owl-prev, button .owl-next {
+    background: black;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    color: #333;
+    transition: background 0.3s, color 0.3s;
+}
+
+button .owl-prev span, button .owl-next span{
+        font-size: 40px;
+}

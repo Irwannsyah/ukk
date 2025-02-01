@@ -30,6 +30,11 @@
                                             value="{{ old('title') }}" required placeholder="Title">
                                     </div>
                                     <div class="form-group">
+                                        <label>City<span style="color: red">*</span></label>
+                                        <input type="text" class="form-control" name="city"
+                                            value="{{ old('city') }}" required placeholder="City">
+                                    </div>
+                                    <div class="form-group">
                                         <label>Slug <span style="color: red">*</span></label>
                                         <input type="text" class="form-control" name="slug"
                                             value="{{ old('slug') }}" required placeholder="Slug Ex. URL">

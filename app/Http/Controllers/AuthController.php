@@ -12,9 +12,9 @@ class AuthController extends Controller
 {
     public function login()
     {
-        if(Auth::check() && Auth::admin()->role = 'admin'){
+        if ( Auth::guard('admin')->check()) {
             return view('admin.dashboard');
-        }else{
+        } else {
             return view('admin.auth.login');
         }
     }
@@ -44,7 +44,7 @@ class AuthController extends Controller
 
 
     public function logout(){
-        Auth::logout();
-        return redirect()->route('admin.logout');
+        Auth::guard('admin')->logout();
+        return redirect()->route('admin_auth_login');
     }
 }

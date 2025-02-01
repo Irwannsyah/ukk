@@ -30,6 +30,7 @@ class DestinationController extends Controller
 
         $destination = new destination();
         $destination->title = $request->title;
+        $destination->city = $request->city;
         $destination->slug = $request->slug;
         $destination->category_id= $request->category_id;
         $destination->price = $request->price;
@@ -56,6 +57,7 @@ class DestinationController extends Controller
 
         $destination = destination::getSingle($id);
         $destination->title = trim($request->title);
+        $destination->city = trim($request->city);
         $destination->slug = trim($request->slug);
         $destination->category_id = trim($request->category_id);
         $destination->price = trim($request->price);

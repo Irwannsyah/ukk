@@ -9,7 +9,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-12">
-                        <h1>Edit Category</h1>
+                        <h1>Edit Destination</h1>
                     </div>
                 </div>
             </div>
@@ -28,6 +28,11 @@
                                         <label>Title<span style="color: red">*</span></label>
                                         <input type="text" class="form-control" name="title"
                                             value="{{ old('title', $get_record->title) }}" required placeholder="Title">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>City<span style="color: red">*</span></label>
+                                        <input type="text" class="form-control" name="city"
+                                            value="{{ old('City', $get_record->city) }}" required placeholder="City">
                                     </div>
                                     <div class="form-group">
                                         <label>Slug <span style="color: red">*</span></label>

@@ -26,7 +26,7 @@ class Category extends Model
         return Category::find($id);
     }
 
-    public function product(){
-        return $this->hasMany(product::class, 'category_id');
+    public function destination(){
+        return $this->hasMany(destination::class, 'category_id');
     }
 }

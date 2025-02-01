@@ -35,6 +35,7 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Title</th>
+                                            <th>City</th>
                                             <th>Slug</th>
                                             <th>Category</th>
                                             <th>price</th>
@@ -51,11 +52,12 @@
                                             <tr>
                                                 <td>{{ $value->id }}</td>
                                                 <td>{{ $value->title }}</td>
+                                                <td>{{ $value->city }}</td>
                                                 <td>{{ $value->slug }}</td>
                                                 <td>{{ $value->category->name }}</td>
                                                 <td>{{ $value->price }}</td>
-                                                <td>{{ $value->short_description }}</td>
-                                                <td>{{ $value->description }}</td>
+                                                <td>{{ Str::limit($value->short_description, 12) }}</td>
+                                                <td>{{ Str::limit($value->description, 12) }}</td>
                                                 <td>{{ $value->additional_information }}</td>
                                                 <td>{{ $value->status == 0 ? 'Open' : 'Closed' }}</td>
                                                 <td>{{ date('d-m-Y', strtotime($value->created_at)) }}</td>

@@ -11,6 +11,7 @@ class destination extends Model
     protected $table = 'destination';
 
     protected $fillable = [
+        'city',
         'title',
         'slug',
         'category_id',

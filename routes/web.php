@@ -9,12 +9,10 @@ use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomepageController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
     Route::get('admin', [AuthController::class, 'login'])->name('admin_login');
     Route::get('register', [AuthController::class, 'register'])->name('admin_register');
@@ -48,4 +46,11 @@ Route::group(['middleware' => 'adminCheck'], function() {
         Route::get('admin/destination/edit/{id}', [DestinationController::class, 'edit'])->name('edit');
         Route::post('admin/destination/edit/{id}', [DestinationController::class, 'update'])->name('update');
     });
+});
+
+Route::as('user.')->group(function(){
+    Route::get('/', [HomepageController::class, 'dashboard'])->name('dashbaord');
+    Route::get('detail', [HomepageController::class, 'detail'])->name('detail');
+    Route::get('login', [HomepageController::class, 'login'])->name('login');
+    Route::get('category', [HomepageController::class, 'category'])->name('category');
 });

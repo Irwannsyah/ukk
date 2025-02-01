@@ -1,0 +1,108 @@
+@extends('layouts.app')
+
+@section('style')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+@endsection
+
+
+@section('content')
+    <main class="max-w-screen-xl mx-auto p-4 bg-white min-h-screen font-roboto rounded-lg my-20">
+        <div class="grid grid-cols-4 gap-2 mb-6">
+            <div class="col-span-3">
+                <a href="{{ asset('assets/img/placeholderImg/1200x600.png') }}" data-fancybox="gallery">
+                    <img src="{{ asset('assets/img/placeholderImg/1200x600.png') }}" alt=""
+                        class="w-full h-auto rounded-l-3xl">
+                </a>
+            </div>
+
+            <div class="grid grid-rows-2 gap-2">
+                <a href="{{ asset('assets/img/placeholderImg/350x250.png') }}" data-fancybox="gallery">
+                    <img src="{{ asset('assets/img/placeholderImg/350x250.png') }}" alt="Small image 1"
+                        class="w-full h-full object-cover rounded-se-3xl">
+                </a>
+                <a href="{{ asset('assets/img/placeholderImg/350x250.png') }}" data-fancybox="gallery" class="relative">
+                    <img src="{{ asset('assets/img/placeholderImg/350x250.png') }}" alt="Small image 2"
+                        class="w-full h-full object-cover rounded-ee-3xl">
+                    <span
+                        class="px-4 py-1 absolute focus:ring-1 bottom-4 right-4 bg-primary text-white font-medium rounded-md">Gallery</span>
+                </a>
+            </div>
+        </div>
+        @php
+            $destination = $get_record->first();
+        @endphp
+        @if ($destination)
+
+        <div class="flex justify-between gap-4">
+            <div class="md:basis-[75%]  ">
+                <h1 class="text-[32px] font-semibold  mb-9">Tiket Wisata {{ $destination->title }}</h1>
+                <ul class="flex flex-col gap-8">
+                    <li class=" p-4">
+                        <h4 class="uppercase text-2xl font-semibold mb-4 ">Deskripsi</h4>
+                        <div class="text-xl text-gray-700 font-roboto">
+                            <p>
+                                {{ $destination->description }}
+                            </p>
+                        </div>
+                    </li>
+                    <li class=" p-4">
+                        <h4 class="uppercase text-2xl font-semibold mb-4">Jam Buka</h4>
+                        <div class="text-xl text-gray-700">
+                            <p>09:00 - 18:00</p>
+                        </div>
+                    </li>
+                    <li class="p-4">
+                        <div class="flex items-center gap-4 mb-4">
+                            <i class="fa-regular fa-map text-xl"></i>
+                            <a href="https://www.google.com/maps?q=-7.9422,112.9530" target="_blank"
+                                class="text-[#037b95] hover:underline text-2xl font-semibold">{{ $destination->city }}</a>
+                        </div>
+                        <div class="w-full h-56" id="map"></div>
+                    </li>
+                </ul>
+            </div>
+            <div class="md:basis-[25%]  ">
+                <div class="w-full p-4 rounded-xl border">
+                    <h4 class="text-gray-300 font-semibold mb-12">Mulai dari <br> <span class="text-2xl text-green-500">Rp
+                            12.000</span></h4>
+
+                    <div>
+                        <button type="button"
+                            class=" w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-gray-700 flex items-center gap-4"
+                            id="menu-button" aria-expanded="true" aria-haspopup="true">
+                            <i class="fa-regular fa-calendar text-xl"></i>
+                            <span class="text-lg">Mon, Oct 21 (Tomorrow)</span>
+                        </button>
+                    </div>
+                    <div class="mt-6">
+                        <button type="button"
+                            class=" w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-gray-700 flex items-center gap-4"
+                            id="menu-button" aria-expanded="true" aria-haspopup="true">
+                            <i class="fa-solid fa-users"></i>
+                            <span class="text-lg">Pilih tiket anda</span>
+                        </button>
+                    </div>
+                    <div class="mt-6">
+                        <a href="{{ url('/payment') }}"
+                            class=" w-full border border-gray-300 shadow-sm px-4 py-2 text-gray-700 flex justify-center hover:bg-opacity-90 items-center gap-4  bg-[#9c2f86] rounded-lg ">
+                            <span class="text-lg font-semibold text-white">Pesan</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+    </main>
+@endsection
+
+@section('script')
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="{{ asset('assets/js/gallery.js') }}"></script>
+    <script src="{{ asset('assets/js/maps.js') }}"></script>
+@endsection

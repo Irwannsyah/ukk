@@ -162,7 +162,7 @@
                       </a>
                   </li>
                   <li class="nav-item">
-                      <a href="{{ asset('admin/destination/list') }}" class="nav-link @if(Request::segment(2) == 'destination') active @endif">
+                      <a href="{{ url('admin/destination/list') }}" class="nav-link @if(Request::segment(2) == 'destination') active @endif">
                           <i class="nav-icon fa fa-mountain"></i>
                           <p>
                               Destination
