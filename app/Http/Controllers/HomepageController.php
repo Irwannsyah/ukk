@@ -13,7 +13,7 @@ class HomepageController extends Controller
     {
         $data['header_title'] = 'Home Page';
         $data['get_record'] = destination::with('category')->get();
-        $data['get_destination'] = Category::with('destination')->get();
+        $data['get_category'] = Category::with('destination')->get();
         $data['brands'] = Brand::all();
         return view('dashboard', $data);
     }
@@ -36,8 +36,9 @@ class HomepageController extends Controller
         return view('detail', $data);
     }
 
-    public function category(){
+    public function category($id){
         $data['header_title'] = 'Category';
+        $data['category'] = category::with('destination')->find($id);
         return view('category.list', $data);
     }
 }

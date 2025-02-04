@@ -60,7 +60,7 @@
                                                 <td>{{ $value->city }}</td>
                                                 <td>{{ $value->slug }}</td>
                                                 <td>{{ $value->category->name }}</td>
-                                                <td>{{ $value->price }}</td>
+                                                <td>{{ $value->formatPrice() }}</td>
                                                 <td>{{ Str::limit($value->short_description, 12) }}</td>
                                                 <td>{{ Str::limit($value->description, 12) }}</td>
                                                 <td>{{ $value->additional_information }}</td>

@@ -73,5 +73,5 @@ Route::as('user.')->group(function(){
     Route::get('/', [HomepageController::class, 'dashboard'])->name('dashbaord');
     Route::get('detail/{id}', [HomepageController::class, 'detail'])->name('detail');
     Route::get('login', [HomepageController::class, 'login'])->name('login');
-    Route::get('category', [HomepageController::class, 'category'])->name('category');
+    Route::get('category/{id}', [HomepageController::class, 'category'])->name('category');
 });

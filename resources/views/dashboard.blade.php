@@ -54,9 +54,9 @@
 
         <h2 class="text-center mb-9 text-4xl font-medium font-poppins">Category</h2>
         <div class="grid grid-cols-3 gap-8 mb-40">
-            @foreach ($get_destination as $value)
-            <a href="{{ route('user.category') }}">
-                <img src="{{ asset('assets/img/placeholderImg/480x225.png') }}" alt=""
+            @foreach ($get_category as $value)
+            <a href="{{ route('user.category', ['id' => $value->id]) }}">
+                <img src="{{ asset('uploads/category/' . $value->image) }}" alt=""
                     class="w-full h-56 object-cover rounded-md opacity-65 hover:opacity-100 duration-200 mb-4">
                 <div class="text-center">
                     <h4 class="font-medium text-3xl">{{ $value->name }}</h4>
@@ -87,7 +87,7 @@
                         </div>
                         <div class="text-right">
                             <h5 class="text-sm text-gray-500">Mulai</h5>
-                            <span class="text-xl font-semibold text-[#e02e4c]">Rp {{ $value->price }}</span>
+                            <span class="text-xl font-semibold text-[#e02e4c]">Rp {{ $value->formatPrice() }}</span>
                         </div>
                     </div>
                 </div>
@@ -97,23 +97,11 @@
         </section>
         <div class="p-4 bg-white border rounded-xl">
             <div id="owl-demo-5" class="owl-carousel gap-2 items-center relative">
+                @foreach ($brands as $value)
                 <div class="w-30 mx-auto">
-                    @foreach ($brands as $value)
                     <img src="{{ asset('uploads/brand/' . $value->image) }}" alt="Brand Image">
-                    @endforeach
                 </div>
-                <div class="w-24 mx-auto">
-                    <img src="{{ asset('assets/img/placeholderImg/100x100.png') }}" alt="Fast Food Brand"
-                        class="w-full h-auto rounded-full">
-                </div>
-                <div class="w-24 mx-auto">
-                    <img src="{{ asset('assets/img/placeholderImg/100x100.png') }}" alt="Fast Food Brand"
-                        class="w-full h-auto rounded-full">
-                </div>
-                <div class="w-24 mx-auto">
-                    <img src="{{ asset('assets/img/placeholderImg/100x100.png') }}" alt="Fast Food Brand"
-                        class="w-full h-auto rounded-full">
-                </div>
+                @endforeach
             </div>
         </div>
     </main>
