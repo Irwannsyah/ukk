@@ -9,7 +9,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-12">
-                        <h1>Add New Category</h1>
+                        <h1>Add New</h1>
                     </div>
                 </div>
             </div>
@@ -21,23 +21,20 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card card-primary">
-                            <form action="" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('banner.insert') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label>Category Name <span style="color: red">*</span></label>
+                                        <label>Banner Name <span style="color: red">*</span></label>
                                         <input type="text" class="form-control" name="name"
-                                            value="{{ old('name') }}" required placeholder="Category Name">
+                                            value="{{ old('name') }}" required placeholder="Banner Name">
                                     </div>
                                     <div class="form-group">
-                                        <label>Image</label>
-                                        <input type="file" class="form-control" name="image" required style="padding: 5px">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Slug <span style="color: red">*</span></label>
-                                        <input type="text" class="form-control" name="slug"
-                                            value="{{ old('slug') }}" required placeholder="Slug Ex. URL">
-                                        <div class="" style="color: red">{{ $errors->first('slug') }}</div>
+                                        <div
+                                            style="display: block; align-items: center; width: 100%;">
+                                            <label>Image</label>
+                                            <input type="file" class="form-control" style="padding: 5px" name="image" accept="image/*">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="card-footer">

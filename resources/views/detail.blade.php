@@ -18,7 +18,6 @@
                         class="w-full h-auto rounded-l-3xl">
                 </a>
             </div>
-
             <div class="grid grid-rows-2 gap-2">
                 <a href="{{ asset('assets/img/placeholderImg/350x250.png') }}" data-fancybox="gallery">
                     <img src="{{ asset('assets/img/placeholderImg/350x250.png') }}" alt="Small image 1"
@@ -32,20 +31,15 @@
                 </a>
             </div>
         </div>
-        @php
-            $destination = $get_record->first();
-        @endphp
-        @if ($destination)
-
         <div class="flex justify-between gap-4">
             <div class="md:basis-[75%]  ">
-                <h1 class="text-[32px] font-semibold  mb-9">Tiket Wisata {{ $destination->title }}</h1>
+                <h1 class="text-[32px] font-semibold  mb-9">Tiket Wisata {{ $Destination->title }}</h1>
                 <ul class="flex flex-col gap-8">
                     <li class=" p-4">
-                        <h4 class="uppercase text-2xl font-semibold mb-4 ">Deskripsi</h4>
+                        <h4 class="text-2xl font-semibold mb-4 ">Deskripsi</h4>
                         <div class="text-xl text-gray-700 font-roboto">
                             <p>
-                                {{ $destination->description }}
+                                {{ $Destination->description }}
                             </p>
                         </div>
                     </li>
@@ -59,7 +53,7 @@
                         <div class="flex items-center gap-4 mb-4">
                             <i class="fa-regular fa-map text-xl"></i>
                             <a href="https://www.google.com/maps?q=-7.9422,112.9530" target="_blank"
-                                class="text-[#037b95] hover:underline text-2xl font-semibold">{{ $destination->city }}</a>
+                                class="text-[#037b95] hover:underline text-2xl font-semibold">{{ $Destination->city }}</a>
                         </div>
                         <div class="w-full h-56" id="map"></div>
                     </li>
@@ -95,7 +89,6 @@
                 </div>
             </div>
         </div>
-        @endif
     </main>
 @endsection
 

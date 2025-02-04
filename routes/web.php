@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\admin\AdminController as AdminAdminController;
+use App\Http\Controllers\admin\BannerController;
+use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\admin\DestinationController;
@@ -45,12 +47,31 @@ Route::group(['middleware' => 'adminCheck'], function() {
         Route::post('admin/destination/add', [DestinationController::class, 'insert'])->name('insert');
         Route::get('admin/destination/edit/{id}', [DestinationController::class, 'edit'])->name('edit');
         Route::post('admin/destination/edit/{id}', [DestinationController::class, 'update'])->name('update');
+        Route::get('admin/destination/delete/{id}', [DestinationController::class, 'delete'])->name('delete');
+    });
+
+    Route::as('banner.')->group(function(){
+        Route::get('admin/banner/list', [BannerController::class, 'list'])->name('list');
+        Route::get('admin/banner/add', [BannerController::class, 'add'])->name('add');
+        Route::post('admin/banner/add', [BannerController::class, 'insert'])->name('insert');
+        Route::get('admin/banner/edit/{id}', [BannerController::class, 'edit'])->name('edit');
+        Route::post('admin/banner/edit/{id}', [BannerController::class, 'update'])->name('update');
+        Route::get('admin/banner/delete/{id}', [BannerController::class, 'delete'])->name('delete');
+    });
+
+    Route::as('brand.')->group(function(){
+        Route::get('admin/brand/list', [BrandController::class, 'list'])->name('list');
+        Route::get('admin/brand/add', [BrandController::class, 'add'])->name('add');
+        Route::post('admin/brand/add', [BrandController::class, 'insert'])->name('insert');
+        Route::get('admin/brand/edit/{id}', [BrandController::class, 'edit'])->name('edit');
+        Route::post('admin/brand/edit/{id}', [BrandController::class, 'update'])->name('update');
+        Route::get('admin/brand/delete/{id}', [BrandController::class, 'delete'])->name('delete');
     });
 });
 
 Route::as('user.')->group(function(){
     Route::get('/', [HomepageController::class, 'dashboard'])->name('dashbaord');
-    Route::get('detail', [HomepageController::class, 'detail'])->name('detail');
+    Route::get('detail/{id}', [HomepageController::class, 'detail'])->name('detail');
     Route::get('login', [HomepageController::class, 'login'])->name('login');
     Route::get('category', [HomepageController::class, 'category'])->name('category');
 });

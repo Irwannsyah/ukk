@@ -9,10 +9,10 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Destination List</h1>
+                        <h1>Brand List</h1>
                     </div>
                     <div class="col-sm-6" style="text-align: right">
-                        <a href="{{ route('destination.add') }}" class="btn btn-primary">Add New Destination</a>
+                        <a href="{{ route('brand.add') }}" class="btn btn-primary">Add New Brand</a>
                     </div>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                         @include('admin.layouts._message')
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Destination List</h3>
+                                <h3 class="card-title">Brand List</h3>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body p-0">
@@ -34,42 +34,25 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Title</th>
-                                            <th>Image</th>
-                                            <th>City</th>
-                                            <th>Slug</th>
-                                            <th>Category</th>
-                                            <th>price</th>
-                                            <th>Short Description</th>
-                                            <th>Description</th>
-                                            <th>Additional Information</th>
-                                            <th>Status</th>
-                                            <th>Created At</th>
-                                            <th>action</th>
+                                            <th>Name</th>
+                                            <th>Brand Image</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($get_record as $value)
+                                        @foreach ($brands as $key => $brand)
                                             <tr>
-                                                <td>{{ $value->id }}</td>
-                                                <td>{{ $value->title }}</td>
+                                                <td>{{ $key + 1 }}</td>
+                                                <td>{{ $brand->name }}</td>
                                                 <td>
-                                                    <img src="{{ asset('uploads/destination/' . $value->image) }}" alt="Banner Image"
+                                                    <img src="{{ asset('uploads/brand/' . $brand->image) }}" alt="brand Image"
                                                         style="width: 200px; height: 150px; object-fit: contain; border-radius: 10px;">
                                                 </td>
-                                                <td>{{ $value->city }}</td>
-                                                <td>{{ $value->slug }}</td>
-                                                <td>{{ $value->category->name }}</td>
-                                                <td>{{ $value->price }}</td>
-                                                <td>{{ Str::limit($value->short_description, 12) }}</td>
-                                                <td>{{ Str::limit($value->description, 12) }}</td>
-                                                <td>{{ $value->additional_information }}</td>
-                                                <td>{{ $value->status == 0 ? 'Open' : 'Closed' }}</td>
-                                                <td>{{ date('d-m-Y', strtotime($value->created_at)) }}</td>
                                                 <td>
-                                                    <a href="{{ url('admin/destination/edit/' . $value->id) }}"
+                                                    <a href="{{ url('admin/brand/edit/' . $brand->id) }}"
                                                         class="btn btn-warning">Edit</a>
-                                                    <a href="{{ url('admin/destination/delete/' . $value->id) }}"
+
+                                                    <a href="{{ url('admin/brand/delete/' . $brand->id) }}"
                                                         class="btn btn-danger">Delete</a>
                                                 </td>
                                             </tr>

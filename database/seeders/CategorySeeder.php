@@ -13,23 +13,23 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        $category = [
-            [
-                'name' => 'Pantai',
-                'slug' => 'Pantai'
-            ],
-            [
-                'name' => 'Gunung',
-                'slug' => 'Gunung'
-            ],
-            [
-                'name' => 'Kebun Binatang',
-                'slug' => 'Kebun Binatang'
-            ]
-        ];
+        // $category = [
+        //     [
+        //         'name' => 'Pantai',
+        //         'slug' => 'Pantai'
+        //     ],
+        //     [
+        //         'name' => 'Gunung',
+        //         'slug' => 'Gunung'
+        //     ],
+        //     [
+        //         'name' => 'Kebun Binatang',
+        //         'slug' => 'Kebun Binatang'
+        //     ]
+        // ];
 
-        foreach($category as $key => $val){
-            Category::create($val);
-        }
+        // foreach($category as $key => $val){
+        //     Category::create($val);
+        // }
     }
 }

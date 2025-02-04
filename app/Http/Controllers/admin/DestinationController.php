@@ -25,12 +25,21 @@ class DestinationController extends Controller
 
     public function insert(Request $request){
         $request->validate([
-            'category_id' => 'required|exists:category,id'
+            'category_id' => 'required|exists:category,id',
+            'image' => 'required|image|mimes:png,jpg,jpeg|max:2048'
         ]);
+
+        $filename = '';
+        if($request->hasFile('image')){
+            $file = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/destination/'), $filename);
+        }
 
         $destination = new destination();
         $destination->title = $request->title;
         $destination->city = $request->city;
+        $destination->image = $filename;
         $destination->slug = $request->slug;
         $destination->category_id= $request->category_id;
         $destination->price = $request->price;
@@ -68,5 +77,19 @@ class DestinationController extends Controller
         $destination->save();
 
         return redirect()->route('destination.list');
+    }
+
+    public function delete($id)
+    {
+        $destination = destination::getSingle($id);
+        if (!$destination) {
+            return redirect()->route('destination.list')->with('error', 'Destination Not Found');
+        }
+        if ($destination->image && file_exists(public_path('uploads/destination/' . $destination->image))) {
+            unlink(public_path('uploads/destination/' . $destination->image)); // Hapus gambar dari folder
+        }
+        $destination->delete();
+
+        return redirect()->route('destination.list')->with('success', 'Delete destination Successfully');
     }
 }

@@ -11,8 +11,9 @@ class destination extends Model
     protected $table = 'destination';
 
     protected $fillable = [
-        'city',
         'title',
+        'image',
+        'city',
         'slug',
         'category_id',
         'price',

@@ -20,9 +20,20 @@ class CategoryController extends Controller
     }
 
     public function insert(Request $request){
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'image' => 'required|image|mimes:png,jpg,jpeg|max:2048'
+        ]);
         $category = new Category();
-        $category->name = trim($request->name);
-        $category->slug = trim($request->slug);
+        $filename = '';
+        if($request->hasFile('image')){
+            $file = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/category/'), $filename);
+        }
+        $category->name = $request->name;
+        $category->image = $filename;
+        $category->slug = $request->slug;
         $category->save();
 
         return redirect()->route('category.list')->with('success', 'Catgory Successfully Created');
@@ -48,6 +59,12 @@ class CategoryController extends Controller
 
     public function delete($id){
         $category = Category::getSingle($id);
+        if(!$category){
+            return redirect()->route('category.list')->with('error', 'Category Not Found');
+        }
+        if ($category->image && file_exists(public_path('uploads/category/' . $category->image))) {
+            unlink(public_path('uploads/category/' . $category->image)); // Hapus gambar dari folder
+        }
         $category->delete();
 
         return redirect()->route('category.list')->with('success', 'Delete Category Successfully');

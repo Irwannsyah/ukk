@@ -35,21 +35,25 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Name</th>
+                                            <th>Image</th>
                                             <th>Slug</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($get_record as $value)
+                                        @foreach ($get_record as $key => $category)
                                             <tr>
-                                                <td>{{ $value->id }}</td>
-                                                <td>{{ $value->name }}</td>
-                                                <td>{{ $value->slug }}</td>
+                                                <td>{{ $key + 1 }}</td>
+                                                <td>{{ $category->name }}</td>
                                                 <td>
-                                                    <a href="{{ url('admin/category/edit/' . $value->id) }}"
+                                                    <img src="{{ asset('uploads/category/' . $category->image) }}" alt="" style="width: 200px; height: 150px; object-fit: contain; border-radius: 10px;">
+                                                </td>
+                                                <td>{{ $category->slug }}</td>
+                                                <td>
+                                                    <a href="{{ url('admin/category/edit/' . $category->id) }}"
                                                         class="btn btn-warning">Edit</a>
 
-                                                    <a href="{{ url('admin/category/delete/' . $value->id) }}"
+                                                    <a href="{{ url('admin/category/delete/' . $category->id) }}"
                                                         class="btn btn-danger">Delete</a>
                                                 </td>
                                             </tr>

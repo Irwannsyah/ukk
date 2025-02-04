@@ -117,7 +117,7 @@
           <img src="{{ asset('assets/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a class="d-block">{{ Auth::guard('admin')->name }}</a>
+          <a class="d-block">{{ Auth::guard('admin')->user()->name }}</a>
         </div>
       </div>
           <!-- SidebarSearch Form -->
@@ -162,10 +162,26 @@
                       </a>
                   </li>
                   <li class="nav-item">
+                      <a href="{{ url('admin/banner/list') }}" class="nav-link @if(Request::segment(2) == 'banner') active @endif">
+                          <i class="nav-icon fa fa-tag"></i>
+                          <p>
+                              Banner
+                          </p>
+                      </a>
+                  </li>
+                  <li class="nav-item">
                       <a href="{{ url('admin/destination/list') }}" class="nav-link @if(Request::segment(2) == 'destination') active @endif">
                           <i class="nav-icon fa fa-mountain"></i>
                           <p>
                               Destination
+                          </p>
+                      </a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="{{ url('admin/brand/list') }}" class="nav-link @if(Request::segment(2) == 'brand') active @endif">
+                          <i class="nav-icon fa fa-fire"></i>
+                          <p>
+                              Brand
                           </p>
                       </a>
                   </li>

@@ -9,7 +9,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-12">
-                        <h1>Add New Category</h1>
+                        <h1>Edit Category</h1>
                     </div>
                 </div>
             </div>
@@ -25,23 +25,21 @@
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label>Category Name <span style="color: red">*</span></label>
+                                        <label>Name Banner <span style="color: red">*</span></label>
                                         <input type="text" class="form-control" name="name"
-                                            value="{{ old('name') }}" required placeholder="Category Name">
+                                            value="{{ old('name', $getSingle->name) }}" required placeholder="Category Name">
                                     </div>
                                     <div class="form-group">
-                                        <label>Image</label>
-                                        <input type="file" class="form-control" name="image" required style="padding: 5px">
+                                        <label>Current Image</label><br>
+                                        <img class="" src="{{ asset('uploads/' . $getSingle->image) }}" alt="" style="width: 150px">
                                     </div>
                                     <div class="form-group">
-                                        <label>Slug <span style="color: red">*</span></label>
-                                        <input type="text" class="form-control" name="slug"
-                                            value="{{ old('slug') }}" required placeholder="Slug Ex. URL">
-                                        <div class="" style="color: red">{{ $errors->first('slug') }}</div>
+                                        <label>Update Image</label>
+                                        <input type="file" class="form-control" name="image" style="padding: 5px;" accept="image/*">
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-primary">Update</button>
                                 </div>
                             </form>
                         </div>

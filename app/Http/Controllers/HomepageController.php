@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\destination;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ class HomepageController extends Controller
         $data['header_title'] = 'Home Page';
         $data['get_record'] = destination::with('category')->get();
         $data['get_destination'] = Category::with('destination')->get();
+        $data['brands'] = Brand::all();
         return view('dashboard', $data);
     }
     public function login()
@@ -25,8 +27,11 @@ class HomepageController extends Controller
         $data['header_title'] = 'Register';
         return view('auth.register_user', $data);
     }
-    public function detail(){
-        $data['get_record'] = destination::with('category')->get();
+    public function detail($id){
+        $data['Destination'] = destination::with('category')->find($id);
+        if(!$data['Destination']){
+            return redirect()->back()->with('error', 'Destinasi Tidak ditemukan');
+        }
         $data['header_title'] = 'Detail';
         return view('detail', $data);
     }

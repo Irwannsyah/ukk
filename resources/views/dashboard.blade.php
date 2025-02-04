@@ -69,10 +69,9 @@
             <h4 class="text-3xl font-medium mb-9 text-center">Top Destinasi</h4>
             <div class="grid grid-cols-4 gap-9">
                 @foreach ($get_record as $value)
-                <a href="{{ route('user.detail') }}"
+                <a href="{{ route('user.detail', ['id' => $value->id]) }}"
                 class="rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200">
-                <img src="{{ asset('assets/img/placeholderImg/350x250.png') }}" alt=""
-                    class="rounded-t-lg w-full">
+                <img src="{{ asset('uploads/destination/' . $value->image) }}" alt="Banner Image">
                 <div class="p-4 flex flex-col gap-4">
                     <div class="space-y-2">
                         <h4 class="font-medium text-gray-500 text-xs tracking-widest uppercase">{{ $value->city }}</h4>
@@ -98,9 +97,10 @@
         </section>
         <div class="p-4 bg-white border rounded-xl">
             <div id="owl-demo-5" class="owl-carousel gap-2 items-center relative">
-                <div class="w-24 mx-auto">
-                    <img src="{{ asset('assets/img/placeholderImg/100x100.png') }}" alt="Fast Food Brand"
-                        class="w-full h-auto rounded-full">
+                <div class="w-30 mx-auto">
+                    @foreach ($brands as $value)
+                    <img src="{{ asset('uploads/brand/' . $value->image) }}" alt="Brand Image">
+                    @endforeach
                 </div>
                 <div class="w-24 mx-auto">
                     <img src="{{ asset('assets/img/placeholderImg/100x100.png') }}" alt="Fast Food Brand"

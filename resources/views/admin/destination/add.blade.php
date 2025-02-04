@@ -21,13 +21,18 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card card-primary">
-                            <form action="" method="POST">
+                            <form action="" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label>Title<span style="color: red">*</span></label>
                                         <input type="text" class="form-control" name="title"
                                             value="{{ old('title') }}" required placeholder="Title">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Image<span style="color: red">*</span></label>
+                                        <input type="file" class="form-control" name="image"
+                                            value="{{ old('image') }}" style="padding: 5px;" required placeholder="image">
                                     </div>
                                     <div class="form-group">
                                         <label>City<span style="color: red">*</span></label>
@@ -51,8 +56,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Price <span style="color: red">*</span></label>
-                                        <input type="text" class="form-control" name="price"
-                                            value="{{ old('price') }}" required placeholder="Price">
+                                        <input type="text" id="summernote" class="form-control" name="price"
+                                            required placeholder="Price">
                                     </div>
                                     <div class="form-group">
                                         <label>Short Description<span style="color: red">*</span></label>
@@ -94,5 +99,19 @@
 
 
 @section('script')
-    <script src="{{ url('public/dist/js/pages/dashboard3.js') }}"></script>
+<!-- Dashboard script -->
+<script src="{{ url('public/dist/js/pages/dashboard3.js') }}"></script>
+
+<!-- Summernote CSS -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
+
+<!-- Summernote JS -->
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('.summernote').summernote();
+    });
+</script>
+
 @endsection
