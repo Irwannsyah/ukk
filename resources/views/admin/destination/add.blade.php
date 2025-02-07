@@ -56,9 +56,10 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Price <span style="color: red">*</span></label>
-                                        <input type="text" id="summernote" class="form-control" name="price"
-                                            required placeholder="Price">
+                                        <input type="text" id="price" class="form-control" name="price" required
+                                            placeholder="Price">
                                     </div>
+
                                     <div class="form-group">
                                         <label>Short Description<span style="color: red">*</span></label>
                                         <input type="text" class="form-control" name="short_description"
@@ -77,7 +78,8 @@
                                     <div class="form-group">
                                         <label>Additional Information<span style="color: red">*</span></label>
                                         <input type="text" class="form-control" name="additional_information"
-                                            value="{{ old('additional_information') }}" required placeholder="additional information">
+                                            value="{{ old('additional_information') }}" required
+                                            placeholder="additional information">
                                     </div>
                                     <div class="form-group">
                                         <label>Status <span style="color: red">*</span></label>
@@ -104,19 +106,30 @@
 
 
 @section('script')
-<!-- Dashboard script -->
-<script src="{{ url('public/dist/js/pages/dashboard3.js') }}"></script>
+    <!-- Dashboard script -->
+    <script src="{{ url('public/dist/js/pages/dashboard3.js') }}"></script>
 
-<!-- Summernote CSS -->
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
+    <!-- Summernote CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
 
-<!-- Summernote JS -->
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
+    <!-- Summernote JS -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
 
-<script>
-    $(document).ready(function() {
-        $('.summernote').summernote();
+    <script>
+        $(document).ready(function() {
+            $('.summernote').summernote();
+        });
+            document.getElementById('price').addEventListener('input', function (e) {
+        let value = e.target.value;
+
+        // Menghapus karakter yang bukan angka
+        value = value.replace(/[^\d]/g, '');
+
+        // Memformat angka dengan menambahkan titik setiap tiga angka
+        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+        // Menyimpan nilai yang diformat kembali ke input field
+        e.target.value = value;
     });
-</script>
-
+    </script>
 @endsection

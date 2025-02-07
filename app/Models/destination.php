@@ -48,18 +48,20 @@ class destination extends Model
 
     public function formatPrice()
     {
-        // // Menggunakan ISOCurrencies untuk mendapatkan mata uang
-        // $currencies = new ISOCurrencies();
+        // Menggunakan ISOCurrencies untuk mendapatkan mata uang
+        $currencies = new ISOCurrencies();
 
-        // // Menggunakan DecimalMoneyParser untuk mengubah format harga
-        // $moneyParser = new DecimalMoneyParser($currencies);
+        // Menggunakan DecimalMoneyParser untuk mengubah format harga
+        $moneyParser = new DecimalMoneyParser($currencies);
 
-        // // Parse nilai harga yang ada di database dengan mata uang IDR
-        // $money = $moneyParser->parse($this->price, new Currency('IDR'));
+        // Parse nilai harga yang ada di database dengan mata uang IDR
+        $money = $moneyParser->parse($this->price, new Currency('IDR'));
 
-        // // Mengembalikan harga dalam satuan yang lebih mudah dibaca
-        // return $money->getAmount() / 100;  // Mengubah kembali ke format biasa, misalnya 100000 -> 1000
+        // Mengubah nilai menjadi format yang mudah dibaca dengan pemisah ribuan
+        $formattedAmount = number_format($money->getAmount() / 100, 0, ',', '.');
 
-         return 'Rp ' . number_format($this->price, 0, ',', '.');
+        // Mengembalikan harga dengan simbol mata uang 'Rp'
+        return 'Rp ' . $formattedAmount;
+
     }
 }
