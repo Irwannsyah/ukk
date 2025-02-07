@@ -78,7 +78,7 @@ Route::as('user.')->group(function(){
     Route::get('register', [AuthUserController::class, 'register'])->name('register');
     Route::post('register', [AuthUserController::class, 'register_user'])->name('register_user');
 
-    Route::get('logout', [AuthUserController::class, 'logout_user'])->name('logout');
+    Route::post('logout', [AuthUserController::class, 'logout_user'])->name('logout');
 
     Route::get('detail/{id}', [HomepageController::class, 'detail'])->name('detail');
     Route::get('category/{id}', [HomepageController::class, 'category'])->name('category');

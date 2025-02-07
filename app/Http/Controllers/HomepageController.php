@@ -44,7 +44,7 @@ class HomepageController extends Controller
     }
 
     public function profile(){
-        $data['user'] = auth()->user();
+        $data['user'] = auth()->user()->load('order');
         $data['header_title'] = 'Profile';
         return view('profile', $data);
     }

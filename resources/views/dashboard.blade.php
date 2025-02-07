@@ -87,7 +87,7 @@
                         </div>
                         <div class="text-right">
                             <h5 class="text-sm text-gray-500">Mulai</h5>
-                            <span class="text-xl font-semibold text-[#e02e4c]">Rp {{ $value->formatPrice() }}</span>
+                            <span class="text-xl font-semibold text-[#e02e4c]">{{ $value->formatPrice() }}</span>
                         </div>
                     </div>
                 </div>

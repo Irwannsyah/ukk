@@ -21,6 +21,7 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->firstName() . '@gmail.com',
+            // 'profile' => fake()->image(storage_path('app/public/uploads/profile'), 100, 100, 'people', false),
             'password' => Hash::make('123456'), // password
             'phone' => function () {
                 $phoneNumber = fake('id_ID')->phoneNumber();
@@ -28,7 +29,6 @@ class UserFactory extends Factory
                 $phoneNumber = preg_replace('/^\+62/', '0', $phoneNumber); // Ganti +62 dengan 0
                 return preg_replace('/^\(\+62\)/', '0', $phoneNumber); // Ganti (+62) dengan 0
             },
-
             'role' => 'user',
             'remember_token' => Str::random(10),
             'email_verified_at' => now(),

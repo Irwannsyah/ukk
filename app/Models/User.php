@@ -56,8 +56,8 @@ class User extends Authenticatable
                         ->get();
     }
 
-    public function checkout()
+    public function order()
     {
-        return $this->hasMany(orders::class);
+        return $this->hasMany(Order::class);
     }
 }

@@ -41,6 +41,7 @@ class AuthUserController extends Controller
 
     public function logout_user(){
         Auth::guard('web')->logout();
+        session()->flush();
         return redirect()->route('user.dashbaord');
     }
 }
