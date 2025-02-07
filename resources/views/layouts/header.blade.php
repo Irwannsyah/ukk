@@ -7,15 +7,23 @@
                 </a>
             </li>
             <li>
-                <div class="flex items-center gap-4">
-
-                    <a href="">
-                        <i class="fa-solid fa-basket-shopping text-xl"></i>
-                    </a>
-                    <a href="{{ route('user.login') }}">
-                            <i class="fa-solid fa-user text-xl"></i>
-                    </a>
-                </div>
+                @if (Auth::check())
+                <a href="{{ route('user.profile') }}">
+                    <p>Welcome {{ Auth::user()->name }}</p>
+                </a>
+                <a href="{{ route('user.logout') }}">
+                    Logout
+                </a>
+                @else
+                    <div class="flex items-center gap-4">
+                        <a href="">
+                            <i class="fa-solid fa-basket-shopping text-xl"></i>
+                        </a>
+                        <a href="{{ route('user.login') }}">
+                                <i class="fa-solid fa-user text-xl"></i>
+                        </a>
+                    </div>
+                @endif
             </li>
 
         </ul>

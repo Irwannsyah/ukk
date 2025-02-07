@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redis;
+use Midtrans\Transaction;
 
 class AuthController extends Controller
 {
@@ -19,10 +20,6 @@ class AuthController extends Controller
         }
     }
 
-    public function register(){
-        return view('admin.auth.register');
-    }
-
     public function admin_auth_login(Request $request){
         $remember = !empty($request->remember) ? true : false;
         if(Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password,], $remember)){
@@ -32,19 +29,12 @@ class AuthController extends Controller
         }
     }
 
-    public function admin_auth_register(Request $request){
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->save();
-        return redirect()->route('admin_login');
-    }
-
 
 
     public function logout(){
         Auth::guard('admin')->logout();
         return redirect()->route('admin_auth_login');
     }
+
+
 }

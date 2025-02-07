@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\destination;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomepageController extends Controller
@@ -40,5 +41,11 @@ class HomepageController extends Controller
         $data['header_title'] = 'Category';
         $data['category'] = category::with('destination')->find($id);
         return view('category.list', $data);
+    }
+
+    public function profile(){
+        $data['user'] = auth()->user();
+        $data['header_title'] = 'Profile';
+        return view('profile', $data);
     }
 }

@@ -81,7 +81,7 @@
                         </button>
                     </div>
                     <div class="mt-6">
-                        <a href="{{ url('/payment') }}"
+                        <a href="{{ url('checkout/' . $Destination->id) }}"
                             class=" w-full border border-gray-300 shadow-sm px-4 py-2 text-gray-700 flex justify-center hover:bg-opacity-90 items-center gap-4  bg-[#9c2f86] rounded-lg ">
                             <span class="text-lg font-semibold text-white">Pesan</span>
                         </a>

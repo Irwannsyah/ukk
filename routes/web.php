@@ -10,26 +10,25 @@ use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuthUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 
 
     Route::get('admin', [AuthController::class, 'login'])->name('admin_login');
-    Route::get('register', [AuthController::class, 'register'])->name('admin_register');
-
     Route::post('admin', [AuthController::class, 'admin_auth_login'])->name('admin_auth_login');
-    Route::post('register', [AuthController::class, 'admin_auth_register'])->name('admin_auth_register');
 
 
-Route::group(['middleware' => 'adminCheck'], function() {
+Route::middleware('admin')->group(function() {
 
     Route::as('admin.')->group(function() {
+        Route::get('admin/logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('admin/dashboard', [AdminDashboardController::class, 'dashboard'])->name('dashboard');
         Route::get('admin/user/list', [UserController::class, 'list'])->name('list');
         Route::get('admin/user/delete/{id}', [UserController::class, 'delete'])->name('delete');
-        Route::get('logout', [AuthController::class, 'logout'])->name('logout');
     });
 
     Route::as('category.')->group(function() {
@@ -71,7 +70,24 @@ Route::group(['middleware' => 'adminCheck'], function() {
 
 Route::as('user.')->group(function(){
     Route::get('/', [HomepageController::class, 'dashboard'])->name('dashbaord');
+
+
+    Route::get('login', [AuthUserController::class, 'login'])->name('login');
+    Route::post('login', [AuthUserController::class, 'login_user'])->name('login_user');
+
+    Route::get('register', [AuthUserController::class, 'register'])->name('register');
+    Route::post('register', [AuthUserController::class, 'register_user'])->name('register_user');
+
+    Route::get('logout', [AuthUserController::class, 'logout_user'])->name('logout');
+
     Route::get('detail/{id}', [HomepageController::class, 'detail'])->name('detail');
-    Route::get('login', [HomepageController::class, 'login'])->name('login');
     Route::get('category/{id}', [HomepageController::class, 'category'])->name('category');
+
+    Route::middleware('auth')->group(function(){
+        Route::get('checkout/{id}', [PaymentController::class, 'checkout'])->name('checkout');
+        Route::post('checkout/{id}', [PaymentController::class, 'checkoutInsert'])->name('checkoutInsert');
+        Route::get('payment/{id}', [PaymentController::class, 'payment'])->name('payment');
+    });
+
+    Route::get('profile', [HomepageController::class, 'profile'])->name('profile');
 });

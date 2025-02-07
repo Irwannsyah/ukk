@@ -44,6 +44,7 @@ class DestinationController extends Controller
         $destination->category_id= $request->category_id;
         $destination->price = $request->price;
         $destination->short_description = $request->short_description;
+        $destination->quote_ticket = $request->quota_ticket;
         $destination->description = $request->description;
         $destination->additional_information = $request->additional_information;
         $destination->status = $request->status;

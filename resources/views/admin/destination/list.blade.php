@@ -40,6 +40,7 @@
                                             <th>Slug</th>
                                             <th>Category</th>
                                             <th>price</th>
+                                            <th>quota</th>
                                             <th>Short Description</th>
                                             <th>Description</th>
                                             <th>Additional Information</th>
@@ -61,6 +62,7 @@
                                                 <td>{{ $value->slug }}</td>
                                                 <td>{{ $value->category->name }}</td>
                                                 <td>{{ $value->formatPrice() }}</td>
+                                                <td>{{ $value->quote_ticket }}</td>
                                                 <td>{{ Str::limit($value->short_description, 12) }}</td>
                                                 <td>{{ Str::limit($value->description, 12) }}</td>
                                                 <td>{{ $value->additional_information }}</td>

@@ -19,7 +19,6 @@ class AdminMiddleware
         if(Auth::guard('admin')->check()){
             return $next($request);
         }
-
         Auth::logout();
         return redirect()->route('admin_login');
     }

@@ -55,4 +55,9 @@ class User extends Authenticatable
                         ->orderBy('id', 'asc')
                         ->get();
     }
+
+    public function checkout()
+    {
+        return $this->hasMany(orders::class);
+    }
 }

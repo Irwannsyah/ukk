@@ -65,6 +65,11 @@
                                             value="{{ old('short_description') }}" required placeholder="Short Description">
                                     </div>
                                     <div class="form-group">
+                                        <label>Quota Ticket<span style="color: red">*</span></label>
+                                        <input type="text" class="form-control" name="quota_ticket"
+                                            value="{{ old('quota_ticket') }}" required placeholder="Quota Ticket">
+                                    </div>
+                                    <div class="form-group">
                                         <label>Description<span style="color: red">*</span></label>
                                         <input type="textarea" class="form-control" name="description"
                                             value="{{ old('description') }}" required placeholder="Description">
