@@ -6,6 +6,7 @@ use App\Models\destination;
 use App\Models\Order;
 use App\Models\orders;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class PaymentController extends Controller
 {
@@ -15,17 +16,10 @@ class PaymentController extends Controller
         if (!$data['destination']) {
             return redirect()->back()->with('error', 'Destinasi Tidak ditemukan');
         }
-
-        // Mengambil jumlah tiket yang dibeli dari request
-        $ticketQuantity = request('ticket_quantity', 1); // Default 1 jika tidak ada input
-
-        // Hitung total harga
-        $totalPrice = $data['destination']->price * $ticketQuantity;
-
             $data['header_title'] = 'Checkout';
         return view('payment.checkout')->with([
             'data' => $data,
-            'totalPrice' => $totalPrice
+            // 'totalPrice' => $totalPrice
         ]);
 
     }
@@ -54,6 +48,14 @@ class PaymentController extends Controller
             'transaction_details' => array(
                 'order_id' => rand(),
                 'gross_amount' => $order->total_price,
+            ),
+            'item_details' => array(
+                [
+                    'id' => 'a1',
+                    'price' => $order->destination->price,
+                    'quantity' => $order->ticket_quantity,
+                    'name' => $order->destination->title,
+                ]
             ),
             'customer_details' => array(
                 'first_name' => $order->user->name,

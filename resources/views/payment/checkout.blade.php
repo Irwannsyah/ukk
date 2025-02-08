@@ -23,11 +23,15 @@
         <input type="text" name="user_id" value="{{ auth()->user()->id }}" hidden>
     </div>
     <!-- Menampilkan nama destinasi -->
-    <div>
-        <label for="destination_name">Destinasi:</label>
-        <input type="text" id="destination_name" name="destination_id" value="{{ $data['destination']->id }}" hidden>
-        <input type="text" id="destination_name" value="{{ $data['destination']->name }}" readonly>
-    </div>
+<div>
+    <label for="destination_name">Destinasi:</label>
+    <!-- ID destinasi disembunyikan -->
+    <input type="text" id="destination_id" name="destination_id" value="{{ $data['destination']->id }}" hidden>
+
+    <!-- Nama destinasi ditampilkan -->
+    <input type="text" id="destination_name" value="{{ $data['destination']->title }}" readonly>
+</div>
+
 
     <!-- Input untuk jumlah tiket -->
     <div>
@@ -38,13 +42,13 @@
     <!-- Menampilkan harga per tiket -->
     <div>
         <label for="price">Harga Per Tiket:</label>
-        <input type="text" id="price" value="{{ $data['destination']->formatPrice() }}" readonly>
+        <input type="text" id="price" value="{{ number_format($data['destination']->price, 0, ',', '.')  }}" readonly>
     </div>
 
     <!-- Menampilkan total harga -->
     <div>
         <label for="total_price">Total Harga:</label>
-        <input type="text" name="total_price" id="total_price" value="{{ $totalPrice }}" readonly>
+        <input type="text" name="total_price" id="total_price" value="" readonly>
     </div>
         <div>
         <label for="status">Status Pemesanan:</label>
@@ -58,18 +62,20 @@
 </form>
 
 <script>
-    // Fungsi untuk memperbarui total harga
     function updateTotalPrice() {
-        const ticketQuantity = document.getElementById('ticket_quantity').value;
-        const pricePerTicket = {{ $data['destination']->price }};
-        const totalPrice = ticketQuantity * pricePerTicket;
+    const ticketQuantity = document.getElementById('ticket_quantity').value;
+    const pricePerTicket = {{ $data['destination']->price }};
+    const totalPrice = ticketQuantity * pricePerTicket;
 
-        // Tampilkan total harga di input
-        document.getElementById('total_price').value = totalPrice;
-    }
+    // Format total harga dengan Intl.NumberFormat
+    const formattedPrice = 'Rp ' + new Intl.NumberFormat('id-ID').format(totalPrice);
 
-    // Panggil fungsi untuk pertama kali saat halaman dimuat
-    updateTotalPrice();
+    // Tampilkan total harga di input
+    document.getElementById('total_price').value = formattedPrice;
+}
+
+// Panggil fungsi untuk pertama kali saat halaman dimuat
+updateTotalPrice();
 </script>
 
 

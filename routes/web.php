@@ -14,6 +14,7 @@ use App\Http\Controllers\AuthUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\PaymentController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
@@ -83,7 +84,7 @@ Route::as('user.')->group(function(){
     Route::get('detail/{id}', [HomepageController::class, 'detail'])->name('detail');
     Route::get('category/{id}', [HomepageController::class, 'category'])->name('category');
 
-    Route::middleware('auth')->group(function(){
+    Route::middleware('user')->group(function(){
         Route::get('checkout/{id}', [PaymentController::class, 'checkout'])->name('checkout');
         Route::post('checkout/{id}', [PaymentController::class, 'checkoutInsert'])->name('checkoutInsert');
         Route::get('payment/{id}', [PaymentController::class, 'payment'])->name('payment');

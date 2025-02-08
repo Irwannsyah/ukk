@@ -61,9 +61,7 @@
             </div>
             <div class="md:basis-[25%]  ">
                 <div class="w-full p-4 rounded-xl border">
-                    <h4 class="text-gray-300 font-semibold mb-12">Mulai dari <br> <span class="text-2xl text-green-500">Rp
-                            12.000</span></h4>
-
+                    <h4 class="text-gray-300 font-semibold mb-12">Mulai dari <br> <span class="text-2xl text-green-500"> Rp {{ number_format($Destination->price, 0, ',','.')  }}</span></h4>
                     <div>
                         <button type="button"
                             class=" w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-gray-700 flex items-center gap-4"
@@ -86,6 +84,35 @@
                             <span class="text-lg font-semibold text-white">Pesan</span>
                         </a>
                     </div>
+
+
+
+                    @if (!empty(session('error')))
+                        <div id="popup"
+                            class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
+                            <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-sm w-full">
+                                <!-- Gambar -->
+                                <img src="{{ asset('assets/img/imgDraw/not_allowed.png') }}" class="w-36 mx-auto" alt="Gambar Guest">
+
+                                <!-- Teks -->
+                                <h2 class="text-xl font-semibold mb-2">{{ session('error') }}</h2>
+
+                                <!-- Tombol -->
+                                <div class="flex items-center justify-center gap-4 mt-4">
+                                    <!-- Tombol Login -->
+                                    <a href="{{ route('user.login') }}"
+                                        class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700">
+                                        Login
+                                    </a>
+                                    <!-- Tombol Tidak -->
+                                    <button onclick="closePopup()"
+                                        class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700">
+                                        Tidak
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -96,6 +123,20 @@
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+    // Fungsi untuk menutup popup dan mengembalikan scroll
+    function closePopup() {
+        document.getElementById('popup').style.display = 'none';
+        document.body.style.overflow = 'auto'; // Mengembalikan scroll setelah popup ditutup
+    }
+
+    // Menonaktifkan scroll ketika popup muncul
+    window.onload = function() {
+        if (document.getElementById('popup')) {
+            document.body.style.overflow = 'hidden'; // Menonaktifkan scroll
+        }
+    }
+    </script>
     <script src="{{ asset('assets/js/gallery.js') }}"></script>
     <script src="{{ asset('assets/js/maps.js') }}"></script>
 @endsection

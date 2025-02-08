@@ -3,6 +3,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Money\Currencies\ISOCurrencies;
+use Money\Currency;
+use Money\Parser\DecimalMoneyParser;
 
 class Order extends Model
 {
@@ -29,5 +32,23 @@ class Order extends Model
     public function payment()
     {
         return $this->hasOne(Payment::class, 'order_id');
+    }
+
+    public function formatTotal()
+    {
+        // Menggunakan ISOCurrencies untuk mendapatkan mata uang
+        $currencies = new ISOCurrencies();
+
+        // Menggunakan DecimalMoneyParser untuk mengubah format harga
+        $moneyParser = new DecimalMoneyParser($currencies);
+
+        // Parse nilai harga yang ada di database dengan mata uang IDR
+        $money = $moneyParser->parse($this->total_price, new Currency('IDR'));
+
+        // Mengubah nilai menjadi format yang mudah dibaca dengan pemisah ribuan
+        $formattedAmount = number_format($money->getAmount() / 100, 0, ',', '.');
+
+        // Mengembalikan harga dengan simbol mata uang 'Rp'
+        return 'Rp ' . $formattedAmount;
     }
 }
