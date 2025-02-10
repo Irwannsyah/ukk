@@ -13,6 +13,7 @@
 
 <body>
     @include('layouts.header')
+    
     @yield('content')
     @yield('script')
     <script src="{{ asset('assets/js/app.js') }}"></script>

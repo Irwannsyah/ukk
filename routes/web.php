@@ -14,6 +14,8 @@ use App\Http\Controllers\AuthUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProfileController;
+use App\Models\destination;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +50,7 @@ Route::middleware('admin')->group(function() {
         Route::get('admin/destination/edit/{id}', [DestinationController::class, 'edit'])->name('edit');
         Route::post('admin/destination/edit/{id}', [DestinationController::class, 'update'])->name('update');
         Route::get('admin/destination/delete/{id}', [DestinationController::class, 'delete'])->name('delete');
+        Route::get('admin/destination/view/{id}', [DestinationController::class, 'view'])->name('view');
     });
 
     Route::as('banner.')->group(function(){
@@ -88,7 +91,9 @@ Route::as('user.')->group(function(){
         Route::get('checkout/{id}', [PaymentController::class, 'checkout'])->name('checkout');
         Route::post('checkout/{id}', [PaymentController::class, 'checkoutInsert'])->name('checkoutInsert');
         Route::get('payment/{id}', [PaymentController::class, 'payment'])->name('payment');
+
+        Route::get('profile', [ProfileController::class, 'profile'])->name('profile');
+        Route::get('profile/riwayatorder', [ProfileController::class, 'riwayat'])->name('riwayat');
     });
 
-    Route::get('profile', [HomepageController::class, 'profile'])->name('profile');
 });

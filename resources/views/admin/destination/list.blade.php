@@ -36,39 +36,36 @@
                                             <th>#</th>
                                             <th>Title</th>
                                             <th>Image</th>
-                                            <th>City</th>
-                                            <th>Slug</th>
                                             <th>Category</th>
                                             <th>price</th>
                                             <th>quota</th>
-                                            <th>Short Description</th>
-                                            <th>Description</th>
-                                            <th>Additional Information</th>
                                             <th>Status</th>
                                             <th>Created At</th>
                                             <th>action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($get_record as $value)
+                                        @foreach ($get_record as $key => $value)
                                             <tr>
-                                                <td>{{ $value->id }}</td>
+                                                <td>{{ $key + 1 }}</td>
                                                 <td>{{ $value->title }}</td>
                                                 <td>
                                                     <img src="{{ asset('uploads/destination/' . $value->image) }}" alt="Banner Image"
                                                         style="width: 200px; height: 150px; object-fit: contain; border-radius: 10px;">
                                                 </td>
-                                                <td>{{ $value->city }}</td>
-                                                <td>{{ $value->slug }}</td>
                                                 <td>{{ $value->category->name }}</td>
-                                                <td>{{ $value->formatPrice() }}</td>
+                                                <td> Rp {{ number_format($value->price, 0, ',', '.') }}</td>
                                                 <td>{{ $value->quote_ticket }}</td>
-                                                <td>{{ Str::limit($value->short_description, 12) }}</td>
-                                                <td>{{ Str::limit($value->description, 12) }}</td>
-                                                <td>{{ $value->additional_information }}</td>
                                                 <td>{{ $value->status == 0 ? 'Open' : 'Closed' }}</td>
                                                 <td>{{ date('d-m-Y', strtotime($value->created_at)) }}</td>
+                                                {{-- <td>{{ $value->city }}</td>
+                                                <td>{{ $value->slug }}</td> --}}
+                                                {{-- <td>{{ Str::limit($value->short_description, 12) }}</td>
+                                                <td>{{ Str::limit($value->description, 12) }}</td>
+                                                <td>{{ $value->additional_information }}</td> --}}
                                                 <td>
+                                                    <a href="{{ url('admin/destination/view/' . $value->id) }}" class="btn btn-primary">
+                                                    View</a>
                                                     <a href="{{ url('admin/destination/edit/' . $value->id) }}"
                                                         class="btn btn-warning">Edit</a>
                                                     <a href="{{ url('admin/destination/delete/' . $value->id) }}"

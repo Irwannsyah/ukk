@@ -42,10 +42,4 @@ class HomepageController extends Controller
         $data['category'] = category::with('destination')->find($id);
         return view('category.list', $data);
     }
-
-    public function profile(){
-        $data['user'] = auth()->user()->load('order');
-        $data['header_title'] = 'Profile';
-        return view('profile', $data);
-    }
 }

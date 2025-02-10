@@ -23,6 +23,8 @@ class destination extends Model
         'slug',
         'category_id',
         'price',
+        'latitude',
+        'longitude',
         'short_description',
         'description',
         'additional_information',
@@ -63,5 +65,9 @@ class destination extends Model
         // Mengembalikan harga dengan simbol mata uang 'Rp'
         return 'Rp ' . $formattedAmount;
 
+    }
+
+    public function gallery(){
+        return $this->hasMany(gallery::class);
     }
 }

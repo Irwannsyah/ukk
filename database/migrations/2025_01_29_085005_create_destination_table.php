@@ -21,6 +21,8 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('category')->onDelete('cascade');
             $table->decimal('price', 10, 2);
             $table->integer('quote_ticket');
+            $table->decimal('latitude', 10, 7);
+            $table->decimal('longitude', 10, 7);
             $table->text('short_description');
             $table->text('description');
             $table->text('additional_information');

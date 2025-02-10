@@ -25,8 +25,20 @@ class DestinationController extends Controller
 
     public function insert(Request $request){
         $request->validate([
+
+            'title' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:destination,slug',
             'category_id' => 'required|exists:category,id',
-            'image' => 'required|image|mimes:png,jpg,jpeg|max:2048'
+            'price' => 'required|numeric|min:0',
+            'latitude' => 'required|numeric|between:-90,90',
+            'longitude' => 'required|numeric|between:-180,180',
+            'image' => 'required|image|mimes:png,jpg,jpeg|max:2048',
+            'short_description' => 'required|string|max:500',
+            'quota_ticket' => 'required|integer|min:1',
+            'description' => 'required|string',
+            'additional_information' => 'required|string',
+            'status' => 'required|in:active,inactive'
         ]);
 
         $filename = '';
@@ -43,6 +55,8 @@ class DestinationController extends Controller
         $destination->slug = $request->slug;
         $destination->category_id= $request->category_id;
         $destination->price = $request->price;
+        $destination->latitude = $request->latitude;
+        $destination->longitude = $request->longitude;
         $destination->short_description = $request->short_description;
         $destination->quote_ticket = $request->quota_ticket;
         $destination->description = $request->description;
@@ -71,6 +85,8 @@ class DestinationController extends Controller
         $destination->slug = trim($request->slug);
         $destination->category_id = trim($request->category_id);
         $destination->price = trim($request->price);
+        $destination->latitude = trim($request->latitude);
+        $destination->longitude = trim($request->longitude);
         $destination->short_description = trim($request->short_description);
         $destination->description = trim($request->description);
         $destination->additional_information = trim($request->additional_information);
@@ -92,5 +108,10 @@ class DestinationController extends Controller
         $destination->delete();
 
         return redirect()->route('destination.list')->with('success', 'Delete destination Successfully');
+    }
+
+    public function view($id){
+        $data['get_destination'] = destination::getSingle($id);
+        return view('admin.destination.view', $data);
     }
 }

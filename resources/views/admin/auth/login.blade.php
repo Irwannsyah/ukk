@@ -20,7 +20,7 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="../../index2.html"><b>e-Commerce</b> Online</a>
+            <a href="../../index2.html"><b>Ticket Line</b> Admin</a>
         </div>
         <!-- /.login-logo -->
         <div class="card">
@@ -64,10 +64,6 @@
 
 
                 <!-- /.social-auth-links -->
-
-                <p class="mb-1">
-                    <a href="">I forgot my password</a>
-                </p>
             </div>
             <!-- /.login-card-body -->
         </div>

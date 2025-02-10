@@ -3,7 +3,7 @@
 @section('content')
     <div class="max-w-screen-xl mx-auto flex gap-8 mt-9 min-h-screen">
         <div class="flex-[25%] border border-[#cdd0d1] rounded-lg bg-white shadow-lg h-full">
-            <div class="flex items-center gap-4 mb-6 p-4">
+            <div class="flex items-center flex-col gap-4 mb-6 p-4">
                 <img src="{{ asset('assets/img/placeholderImg/100x100.png') }}" class="rounded-full w-20 h-20 object-cover"
                     alt="">
                 <div class="text-gray-700">
@@ -12,20 +12,30 @@
             </div>
 
             <ul class="flex flex-col space-y-2 px-4">
-                <li
-                    class="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-[#0194f3] transition duration-200 ease-in-out">
-                    <i class="fa-solid fa-user text-gray-500 "></i>
-                    <a href="" class="text-lg text-gray-700 ">Profile</a>
+                <li>
+                    <a href="{{ url('profile') }}"
+                        class="flex items-center gap-2 px-4 py-2 rounded-md transition duration-200 ease-in-out
+                        @if (Request::segment(1) == 'profile') bg-[#0194f3] text-white @else hover:bg-[#0194f3] hover:text-white text-gray-500 @endif">
+                        <i class="fa-solid fa-user"></i>
+                        <p>Profile</p>
+                    </a>
+
                 </li>
-                <li
-                    class="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-[#0194f3] transition duration-200 ease-in-out">
-                    <i class="fa-solid fa-file-invoice text-gray-500 "></i>
-                    <a href="" class="text-lg text-gray-700 ">Riwayat Order</a>
+                <li>
+                    <a href=""
+                        class="flex items-center gap-2 px-4 py-2 rounded-md transition duration-200 ease-in-out
+                        @if (Request::segment(1) == 'Riwayat') bg-[#0194f3] text-white @else hover:bg-[#0194f3] hover:text-white text-gray-500 @endif">
+                        <i class="fa-solid fa-list"></i>
+                        <p>Riwayat</p>
+                    </a>
                 </li>
-                <li
-                    class="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-[#0194f3] transition duration-200 ease-in-out">
-                    <i class="fa-solid fa-ticket text-gray-500 "></i>
-                    <a href="" class="text-lg text-gray-700 ">E-Ticket</a>
+                <li>
+                    <a href=""
+                        class="flex items-center gap-2 px-4 py-2 rounded-md transition duration-200 ease-in-out
+                        @if (Request::segment(1) == 'ticket') bg-[#0194f3] text-white @else hover:bg-[#0194f3] hover:text-white text-gray-500 @endif">
+                        <i class="fa-solid fa-ticket"></i>
+                        <p>E-Ticket</p>
+                    </a>
                 </li>
                 <li>
                     <form action="{{ route('user.logout') }}" method="POST" class="px-4 py-2">
@@ -71,7 +81,8 @@
                                             {{ $order->ticket_quantity }}</td>
                                         <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ $order->total_price }}
                                         </td>
-                                        <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ $order->status }}</td>
+                                        <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ $order->status }}
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
