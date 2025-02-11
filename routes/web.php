@@ -16,6 +16,7 @@ use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Models\destination;
+use App\Models\payment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -91,6 +92,7 @@ Route::as('user.')->group(function(){
         Route::get('checkout/{id}', [PaymentController::class, 'checkout'])->name('checkout');
         Route::post('checkout/{id}', [PaymentController::class, 'checkoutInsert'])->name('checkoutInsert');
         Route::get('payment/{id}', [PaymentController::class, 'payment'])->name('payment');
+        Route::post('payment',  [PaymentController::class, 'payment_post'])->name('paymentpost');
 
         Route::get('profile', [ProfileController::class, 'profile'])->name('profile');
         Route::get('profile/riwayatorder', [ProfileController::class, 'riwayat'])->name('riwayat');

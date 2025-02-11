@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
     public function profile()
     {
-        $data['user'] = auth()->user()->load('order');
+        $data['user'] = Order::where('user_id', Auth::id())->get();
         $data['header_title'] = 'Profile';
         return view('profile.profile', $data);
     }

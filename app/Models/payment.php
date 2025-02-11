@@ -9,13 +9,8 @@ class payment extends Model
 {
     use HasFactory;
     protected $table = 'payment';
-    protected $fillable = [
-        'user_id',
-        'order_id',
-        'total_amount',
-        'status',
-        'payment_type',
-        'transaction_time'
+    protected $guarded = [
+        
     ];
 
     public function orders(){

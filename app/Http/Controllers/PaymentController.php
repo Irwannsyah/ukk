@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\destination;
 use App\Models\Order;
 use App\Models\orders;
+use App\Models\payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use PHPUnit\Framework\MockObject\ReturnValueNotConfiguredException;
 
 class PaymentController extends Controller
 {
@@ -19,7 +21,6 @@ class PaymentController extends Controller
             $data['header_title'] = 'Checkout';
         return view('payment.checkout')->with([
             'data' => $data,
-            // 'totalPrice' => $totalPrice
         ]);
 
     }
@@ -38,7 +39,7 @@ class PaymentController extends Controller
 
 
     public function payment($orderId){
-        $order = Order::with('payment')->findOrFail($orderId);
+        $order = Order::getSingle($orderId);
         \Midtrans\Config::$serverKey = config('midtrans.serverKey');
         \Midtrans\Config::$isProduction = false;
         \Midtrans\Config::$isSanitized = true;
@@ -65,8 +66,24 @@ class PaymentController extends Controller
         );
 
         $snapToken = \Midtrans\Snap::getSnapToken($params);
-        $data['snapToken'] = $snapToken;
-        $data['header_title'] = 'Payment';
+        $data = [
+            'snapToken' => $snapToken,
+            'header_title' => 'Payment',
+            'order' => $order,
+        ];
         return view('payment.payment', $data);
+    }
+
+    public function payment_post(Request $request){
+        $json= json_decode($request->get('json'));
+        $payment = new payment();
+        $payment->status = $json->transaction_status;
+        $payment->name = $request->name;
+        $payment->email = $request->email;
+        $payment->transaction_id = $json->transaction_id;
+        $payment->order_id = $json->order_id;
+        $payment->gross_amount = $json->gross_amount;
+        $payment->paymen_type = $json->payment_type;
+        return $payment->save() ? redirect()->route('user.dashbaord')->with('success', 'Pembayaran telah berhasil dilakukan') : redirect()->route('user.dashbaord')->with('failed', 'Pembayaran Gagal');
     }
 }

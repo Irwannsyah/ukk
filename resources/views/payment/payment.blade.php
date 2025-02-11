@@ -22,20 +22,46 @@
 
 <body>
   <button id="pay-button">Pay!</button>
-
   <!-- @TODO: You can add the desired ID as a reference for the embedId parameter. -->
-  <div id="snap-container"></div>
+  <div id="snap-container">
+      <form action="{{ route('user.paymentpost') }}" method="POST" id="submit_form">
+          @csrf
+          <div class="grid grid-cols-2">
+              <input type="text" readonly name="name" value="{{ $order->user->name }}">
+              <input type="text" readonly name="email" value="{{ $order->user->email }}">
+              <input type="text" readonly value="{{ $order->destination->title }}">
+              <input type="text" readonly value="{{ $order->total_price }}">
+          </div>
+        <input type="hidden" name="json" id="json_callback">
+
+    </form>
+  </div>
 
   <script type="text/javascript">
-    // For example trigger on button clicked, or any time you need
-    var payButton = document.getElementById('pay-button');
-    payButton.addEventListener('click', function () {
-      // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token.
-      // Also, use the embedId that you defined in the div above, here.
-      window.snap.embed('{{ $snapToken }}', {
-        embedId: 'snap-container'
+  var payButton = document.getElementById('pay-button');
+      payButton.addEventListener('click', function () {
+        // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token
+        window.snap.pay('{{ $snapToken }}', {
+          onSuccess: function(result){
+            send_response_to_form(result);
+          },
+          onPending: function(result){
+            send_response_to_form(result);
+          },
+          onError: function(result){
+            send_response_to_form(result);
+          },
+          onClose: function(){
+            alert('you closed the popup without finishing the payment');
+          }
+        })
       });
-    });
+
+      function send_response_to_form(result){
+        document.getElementById('json_callback').value = JSON.stringify(result);
+        $('#submit_form').submit();
+        // alert(document.getElementById('json_callback').value)
+      }
   </script>
 </body>
 

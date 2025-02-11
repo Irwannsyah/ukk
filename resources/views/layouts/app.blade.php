@@ -14,6 +14,7 @@
 <body>
     @include('layouts.header')
     @yield('content')
+    <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
     @yield('script')
     <script src="{{ asset('assets/js/app.js') }}"></script>
 </html>

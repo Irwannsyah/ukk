@@ -24,22 +24,22 @@ class DestinationController extends Controller
     }
 
     public function insert(Request $request){
-        $request->validate([
+        // dd($request);
+        // $request->validate([
 
-            'title' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:destination,slug',
-            'category_id' => 'required|exists:category,id',
-            'price' => 'required|numeric|min:0',
-            'latitude' => 'required|numeric|between:-90,90',
-            'longitude' => 'required|numeric|between:-180,180',
-            'image' => 'required|image|mimes:png,jpg,jpeg|max:2048',
-            'short_description' => 'required|string|max:500',
-            'quota_ticket' => 'required|integer|min:1',
-            'description' => 'required|string',
-            'additional_information' => 'required|string',
-            'status' => 'required|in:active,inactive'
-        ]);
+        //     'title' => 'required|string|max:255',
+        //     'city' => 'required|string|max:255',
+        //     'slug' => 'required|string|max:255|unique:destination,slug',
+        //     // 'category_id' => 'required|exists:category,id',
+        //     'latitude' => 'required|numeric|between:-90,90',
+        //     'longitude' => 'required|numeric|between:-180,180',
+        //     'image' => 'required|image|mimes:png,jpg,jpeg|max:2048',
+        //     'short_description' => 'required|string|max:500',
+        //     'quota_ticket' => 'required|integer|min:1',
+        //     'description' => 'required|string',
+        //     'additional_information' => 'required|string',
+        //     'status' => 'required|in:active,inactive'
+        // ]);
 
         $filename = '';
         if($request->hasFile('image')){
@@ -54,7 +54,8 @@ class DestinationController extends Controller
         $destination->image = $filename;
         $destination->slug = $request->slug;
         $destination->category_id= $request->category_id;
-        $destination->price = $request->price;
+        $price = str_replace('.', '', $request->price);
+        $destination->price = $price;
         $destination->latitude = $request->latitude;
         $destination->longitude = $request->longitude;
         $destination->short_description = $request->short_description;

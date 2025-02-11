@@ -49,7 +49,7 @@
         </div>
         <div class="flex-[75%] border border-[#cdd0d1] shadow-lg bg-white rounded-md p-2 h-full">
             <div class=" bg-white rounded-md p-2">
-                @if ($user->order->isNotEmpty())
+                @if ($user->isNotEmpty())
                     <h2 class="text-lg font-bold mb-4">Riwayat Order</h2>
                     <div class="overflow-x-auto">
                         <table class="min-w-full table-auto border-collapse border border-gray-200">
@@ -69,7 +69,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($user->order as $key => $order)
+                                @forelse ($user as $key => $order)
                                     <tr class="{{ $key % 2 == 0 ? 'bg-white' : 'bg-gray-50' }} hover:bg-gray-100">
                                         <td class="border border-gray-300 px-4 py-2 text-gray-700 text-center">
                                             {{ $key + 1 }}</td>

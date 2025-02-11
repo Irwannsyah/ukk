@@ -29,9 +29,8 @@ class Order extends Model
         return $this->belongsTo(Destination::class, 'destination_id');
     }
 
-    public function payment()
-    {
-        return $this->hasOne(Payment::class, 'order_id');
+    static public function getSingle($id){
+        return self::find($id);
     }
 
     public function formatTotal()
