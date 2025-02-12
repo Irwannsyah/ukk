@@ -20,6 +20,11 @@ class UserMiddleware
             return $next($request);
         }
 
-        return redirect()->back()->with('error', 'Kamu Belum Login Nih, Login Dulu Yuk');
+        return redirect()->back()->with('sweet_alert', [
+            'icon' => 'error',
+            'title' => 'Akses di tolak!',
+            'text' => 'Kamu belum login nih, Login dulu yuk',
+            'showLogin' => true
+        ]);
     }
 }

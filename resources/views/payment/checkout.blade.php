@@ -10,77 +10,104 @@
 
 
 @section('content')
-<section class="max-w-screen-xl mx-auto bg-white mt-12">
-    <div class="max-w-96 mx-auto">
+    <section class="max-w-screen-xl mx-auto bg-white mt-12 p-6 shadow-lg rounded-lg">
+        <div class="max-w-lg mx-auto">
+            <form action="" method="POST" class="space-y-6">
+                @csrf
+                <!-- Menampilkan nama pemesan -->
+                <div>
+                    <label for="destination_name" class="block text-sm font-medium text-gray-700">Pemesan:</label>
+                    <h1>{{ auth()->user()->name }}</h1>
+                    <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                </div>
 
-    <form action="" method="POST">
-    @csrf
+                <!-- Menampilkan nama destinasi -->
+                <div>
+                    <label for="destination_name" class="block text-sm font-medium text-gray-700">Destinasi:</label>
+                    <input type="hidden" id="destination_id" name="destination_id" value="{{ $destination->id }}">
+                    <h1>{{ $destination->title }}</h1>
+                </div>
 
-    <!-- Menampilkan nama destinasi -->
-    <div>
-        <label for="destination_name">Pemesan:</label>
-        <input type="text" id="" value="{{ auth()->user()->name }}" readonly>
-        <input type="text" name="user_id" value="{{ auth()->user()->id }}" hidden>
+                <!-- Input untuk jumlah tiket -->
+                <div>
+                    <label for="ticket_quantity" class="block text-sm font-medium text-gray-700">Jumlah Tiket:</label>
+                    <input type="number" id="ticket_quantity" name="ticket_quantity" value="1" min="1"
+                        oninput="updateTotalPrice()"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:bg-gray-50">
+
+                </div>
+
+                <!-- Menampilkan harga per tiket -->
+                <div>
+                    <label for="price" class="block text-sm font-medium text-gray-700">Harga Per Tiket:</label>
+                    <div id="price"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-700 flex items-center gap-1">
+                        <span class="text-lg font-semibold">Rp</span>
+                        <span class="text-lg font-semibold">{{ number_format($destination->price, 0, ',', '.') }}</span>
+                    </div>
+                </div>
+
+                <!-- Menampilkan total harga -->
+                <div>
+                    <label for="total_price" class="block text-sm font-medium text-gray-700">Total Harga:</label>
+                    <input type="text" name="total_price" id="total_price"
+                        class="w-full px-4 py-2 border-gray-300 text-lg text-gray-900 rounded-md shadow-sm bg-gray-100 cursor-not-allowed"
+                        value="" readonly>
+                </div>
+                <div>
+                    <label for="visit_date" class="block text-sm font-medium text-gray-700">Tanggal Liburan:</label>
+                    <input type="date" id="visit_date" name="visit_date"
+                        class="w-full px-4 py-2 border-gray-300 text-lg text-gray-900 rounded-md shadow-sm bg-gray-100 cursor-pointer">
+                </div>
+                <!-- Tombol checkout -->
+                <div>
+                    <button type="submit"
+                        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none">
+                        Checkout
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    </form>
+
+    <script>
+        function updateTotalPrice() {
+            const ticketQuantity = document.getElementById('ticket_quantity').value;
+            const pricePerTicket = {{ $destination->price }};
+            const totalPrice = ticketQuantity * pricePerTicket;
+
+            // Format total harga dengan Intl.NumberFormat
+            const formattedPrice = 'Rp ' + new Intl.NumberFormat('id-ID').format(totalPrice);
+
+            // Tampilkan total harga di input
+            document.getElementById('total_price').value = formattedPrice;
+        }
+
+        // Panggil fungsi untuk pertama kali saat halaman dimuat
+        updateTotalPrice();
+
+        // Mendapatkan elemen input
+        const visitDateInput = document.getElementById('visit_date');
+
+        // Mendapatkan tanggal hari ini dalam format YYYY-MM-DD
+        const today = new Date().toISOString().split('T')[0];
+
+        // Mengatur nilai default input dengan tanggal hari ini
+        visitDateInput.value = today;
+
+        // Mengatur batasan agar pengguna tidak bisa memilih tanggal kemarin
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1); // Mengurangi satu hari dari hari ini
+        const yesterdayDate = yesterday.toISOString().split('T')[0]; // Format YYYY-MM-DD
+
+        visitDateInput.setAttribute('min', today);
+    </script>
+
+
     </div>
-    <!-- Menampilkan nama destinasi -->
-<div>
-    <label for="destination_name">Destinasi:</label>
-    <!-- ID destinasi disembunyikan -->
-    <input type="text" id="destination_id" name="destination_id" value="{{ $data['destination']->id }}" hidden>
-
-    <!-- Nama destinasi ditampilkan -->
-    <input type="text" id="destination_name" value="{{ $data['destination']->title }}" readonly>
-</div>
-
-
-    <!-- Input untuk jumlah tiket -->
-    <div>
-        <label for="ticket_quantity">Jumlah Tiket:</label>
-        <input type="number" id="ticket_quantity" name="ticket_quantity" value="1" min="1" oninput="updateTotalPrice()">
-    </div>
-
-    <!-- Menampilkan harga per tiket -->
-    <div>
-        <label for="price">Harga Per Tiket:</label>
-        <input type="text" id="price" value="{{ number_format($data['destination']->price, 0, ',', '.')  }}" readonly>
-    </div>
-
-    <!-- Menampilkan total harga -->
-    <div>
-        <label for="total_price">Total Harga:</label>
-        <input type="text" name="total_price" id="total_price" value="" readonly>
-    </div>
-        <div>
-        <label for="status">Status Pemesanan:</label>
-        <input type="text" id="status" value="Menunggu Pembayaran" readonly>
-        <input type="hidden" name="status" value="pending">
-    </div>
-
-
-
-    <button type="submit">Checkout</button>
-</form>
-
-<script>
-    function updateTotalPrice() {
-    const ticketQuantity = document.getElementById('ticket_quantity').value;
-    const pricePerTicket = {{ $data['destination']->price }};
-    const totalPrice = ticketQuantity * pricePerTicket;
-
-    // Format total harga dengan Intl.NumberFormat
-    const formattedPrice = 'Rp ' + new Intl.NumberFormat('id-ID').format(totalPrice);
-
-    // Tampilkan total harga di input
-    document.getElementById('total_price').value = formattedPrice;
-}
-
-// Panggil fungsi untuk pertama kali saat halaman dimuat
-updateTotalPrice();
-</script>
-
-
-    </div>
-</section>
+    </section>
 @endsection
 
 @section('script')

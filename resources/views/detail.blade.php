@@ -38,7 +38,7 @@
                 <ul class="flex flex-col gap-8">
                     <li class=" p-4">
                         <h4 class="text-2xl font-semibold mb-4 ">Deskripsi</h4>
-                        <div class="text-xl text-gray-700 font-roboto">
+                        <div class="text-[16px] text-gray-700 font-roboto">
                             <p>
                                 {{ $Destination->description }}
                             </p>
@@ -67,22 +67,6 @@
                 <div class="w-full p-4 rounded-xl border">
                     <h4 class="text-gray-300 font-semibold mb-12">Mulai dari <br> <span class="text-2xl text-green-500"> Rp
                             {{ number_format($Destination->price, 0, ',', '.') }}</span></h4>
-                    <div>
-                        <button type="button"
-                            class=" w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-gray-700 flex items-center gap-4"
-                            id="menu-button" aria-expanded="true" aria-haspopup="true">
-                            <i class="fa-regular fa-calendar text-xl"></i>
-                            <span class="text-lg">Mon, Oct 21 (Tomorrow)</span>
-                        </button>
-                    </div>
-                    <div class="mt-6">
-                        <button type="button"
-                            class=" w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-gray-700 flex items-center gap-4"
-                            id="menu-button" aria-expanded="true" aria-haspopup="true">
-                            <i class="fa-solid fa-users"></i>
-                            <span class="text-lg">Pilih tiket anda</span>
-                        </button>
-                    </div>
                     <div class="mt-6">
                         <a href="{{ url('checkout/' . $Destination->id) }}"
                             class=" w-full border border-gray-300 shadow-sm px-4 py-2 text-gray-700 flex justify-center hover:bg-opacity-90 items-center gap-4  bg-[#9c2f86] rounded-lg ">
@@ -90,33 +74,6 @@
                         </a>
                     </div>
 
-                    @if (!empty(session('error')))
-                        <div id="popup"
-                            class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
-                            <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-sm w-full">
-                                <!-- Gambar -->
-                                <img src="{{ asset('assets/img/imgDraw/not_allowed.png') }}" class="w-36 mx-auto"
-                                    alt="Gambar Guest">
-
-                                <!-- Teks -->
-                                <h2 class="text-xl font-semibold mb-2">{{ session('error') }}</h2>
-
-                                <!-- Tombol -->
-                                <div class="flex items-center justify-center gap-4 mt-4">
-                                    <!-- Tombol Login -->
-                                    <a href="{{ route('user.login') }}"
-                                        class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700">
-                                        Login
-                                    </a>
-                                    <!-- Tombol Tidak -->
-                                    <button onclick="closePopup()"
-                                        class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700">
-                                        Tidak
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>
@@ -124,6 +81,25 @@
 @endsection
 
 @section('script')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        @if (session('sweet_alert') && session('sweet_alert.showLogin'))
+        Swal.fire({
+            icon: '{{ session('sweet_alert.icon') }}',
+            title: '{{ session('sweet_alert.title') }}',
+            text: '{{ session('sweet_alert.text') }}',
+            showCancelButton: true,
+            confirmButtonText: 'Login',
+            cancelButtonText: 'Batal',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{{ route('user.login') }}";
+            }
+        });
+    @endif
+</script>
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>

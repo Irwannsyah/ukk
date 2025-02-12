@@ -21,20 +21,21 @@
 </head>
 
 <body>
-  <button id="pay-button">Pay!</button>
-  <!-- @TODO: You can add the desired ID as a reference for the embedId parameter. -->
-  <div id="snap-container">
-      <form action="{{ route('user.paymentpost') }}" method="POST" id="submit_form">
-          @csrf
-          <div class="grid grid-cols-2">
-              <input type="text" readonly name="name" value="{{ $order->user->name }}">
-              <input type="text" readonly name="email" value="{{ $order->user->email }}">
-              <input type="text" readonly value="{{ $order->destination->title }}">
-              <input type="text" readonly value="{{ $order->total_price }}">
-          </div>
-        <input type="hidden" name="json" id="json_callback">
+    <!-- @TODO: You can add the desired ID as a reference for the embedId parameter. -->
+    <div id="snap-container" class="flex items-center justify-center min-h-screen">
+        <form action="{{ route('user.paymentpost') }}" method="POST" id="submit_form" class="max-w-screen-md mx-auto bg-white rounded-md">
+            @csrf
+            <div class="grid grid-cols-2">
+                <h4>{{ $order->order_id }}</h4>
+                <h4>{{ $order->user->name }}</h4>
+                <h4>{{ $order->destination->title }}</h4>
+                <h4>{{ $order->total_price }}</h4>
+             </div>
 
-    </form>
+            <button id="pay-button">Pay!</button>
+            <input type="hidden" name="json" id="json_callback">
+</form>
+
   </div>
 
   <script type="text/javascript">

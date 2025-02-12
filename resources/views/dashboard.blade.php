@@ -68,14 +68,16 @@
                 @foreach ($get_record as $value)
                     <a href="{{ route('user.detail', ['id' => $value->id]) }}"
                         class="rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200">
-                        <img src="{{ asset('uploads/destination/' . $value->image) }}" alt="Banner Image">
+                        <img src="{{ asset('uploads/destination/' . $value->image) }}" alt="Banner Image"
+                            class="object-cover h-48 w-full">
                         <div class="p-4 flex flex-col gap-4">
                             <div class="space-y-2">
                                 <h4 class="font-medium text-gray-500 text-xs tracking-widest uppercase">{{ $value->city }}
                                 </h4>
                                 <h1 class="font-bold text-[#484753] text-xl font-monserrat">{{ $value->title }}</h1>
                                 <p class="line-clamp-2 text-sm text-gray-600">
-                                    {{ $value->short_description }} </p>
+                                    {{ $value->short_description }}
+                                </p>
                             </div>
                             <div class="flex items-end justify-between">
                                 <div class="flex items-center gap-1 text-sm">
@@ -85,7 +87,8 @@
                                 </div>
                                 <div class="text-right">
                                     <h5 class="text-sm text-gray-500">Mulai</h5>
-                                    <span class="text-xl font-semibold text-[#e02e4c]">{{ $value->formatPrice() }}</span>
+                                    <span class="text-xl font-semibold text-[#e02e4c]">Rp
+                                        {{ number_format($value->price, 0, ',', '.') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -112,21 +115,20 @@
                     <!-- Teks -->
                     <h2 class="text-xl font-semibold mb-2">{{ session('success') }}</h2>
                     <div class="flex items-center justify-center gap-4 mt-4">
-                                    <!-- Tombol Login -->
-                                    <a href="{{ route('user.login') }}"
-                                        class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700">
-                                        Cek Invoice
-                                    </a>
-                                    <!-- Tombol Tidak -->
-                                    <button onclick="closePopup()"
-                                        class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700">
-                                        Kembali
-                                    </button>
-                                </div>
+                        <!-- Tombol Login -->
+                        <a href="{{ route('user.login') }}"
+                            class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700">
+                            Cek Invoice & E-Ticket
+                        </a>
+                        <!-- Tombol Tidak -->
+                        <button onclick="closePopup()" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700">
+                            Kembali
+                        </button>
+                    </div>
                 </div>
             </div>
-            @elseif (!empty(session('failed')))
-                <div id="popup"
+        @elseif (!empty(session('failed')))
+            <div id="popup"
                 class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
                 <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-sm w-full">
                     <!-- Gambar -->
@@ -143,7 +145,7 @@
 @section('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-        <script>
+    <script>
         // Fungsi untuk menutup popup dan mengembalikan scroll
         function closePopup() {
             document.getElementById('popup').style.display = 'none';

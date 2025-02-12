@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('destination_id')->references('id')->on('destination')->onDelete('cascade');
+            $table->date('visit_date');
             $table->string('total_price');
             $table->integer('ticket_quantity');
-            $table->enum('status', ['pending', 'success', 'failed', 'expired'])->default('pending');
+            $table->string('order_id')->unique();
             $table->timestamps();
         });
     }

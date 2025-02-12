@@ -12,11 +12,12 @@ class Order extends Model
     use HasFactory;
     protected $table = 'orders';
     protected $fillable = [
+        'order_id',
         'user_id',
         'destination_id',
         'total_price',
         'ticket_quantity',
-        'status'
+        'visit_date'
     ];
 
     public function user()
@@ -31,6 +32,10 @@ class Order extends Model
 
     static public function getSingle($id){
         return self::find($id);
+    }
+
+    public function payment(){
+        return $this->hasMany(payment::class, 'order_id', 'order_id');
     }
 
     public function formatTotal()

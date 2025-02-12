@@ -17,10 +17,12 @@ return new class extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('transaction_id');
-            $table->string('order_id');
+            $table->string('order_id')->unique();
             $table->string('gross_amount');
             $table->string('paymen_type');
             $table->timestamps();
+
+            $table->index('order_id');
         });
     }
 

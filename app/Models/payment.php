@@ -10,10 +10,10 @@ class payment extends Model
     use HasFactory;
     protected $table = 'payment';
     protected $guarded = [
-        
+
     ];
 
     public function orders(){
-        return $this->belongsTo(Order::class, 'order_id');
+        return $this->belongsTo(Order::class, 'order_id', 'order_id');
     }
 }

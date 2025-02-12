@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\destination;
 use App\Models\Order;
 use App\Models\orders;
+use Illuminate\Support\Str;
 use App\Models\payment;
+use Dotenv\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\MockObject\ReturnValueNotConfiguredException;
 
 class PaymentController extends Controller
@@ -19,19 +22,18 @@ class PaymentController extends Controller
             return redirect()->back()->with('error', 'Destinasi Tidak ditemukan');
         }
             $data['header_title'] = 'Checkout';
-        return view('payment.checkout')->with([
-            'data' => $data,
-        ]);
+        return view('payment.checkout', $data);
 
     }
 
     public function checkoutInsert(Request $request){
         $order = new Order();
+        $order->order_id = 'ORD-' . strtoupper(Str::random(10));
         $order->user_id = auth()->user()->id;
         $order->destination_id = $request->destination_id;
         $order->total_price = $request->total_price;
         $order->ticket_quantity = $request->ticket_quantity;
-        $order->status = $request->status;
+        $order->visit_date = $request->visit_date;
         $order->save();
 
         return redirect()->route('user.payment', ['id' => $order->id])->with('success', 'Pesanan berhasil dibuat');
@@ -39,6 +41,7 @@ class PaymentController extends Controller
 
 
     public function payment($orderId){
+
         $order = Order::getSingle($orderId);
         \Midtrans\Config::$serverKey = config('midtrans.serverKey');
         \Midtrans\Config::$isProduction = false;
@@ -47,7 +50,7 @@ class PaymentController extends Controller
 
         $params = array(
             'transaction_details' => array(
-                'order_id' => rand(),
+                'order_id' => $order->order_id,
                 'gross_amount' => $order->total_price,
             ),
             'item_details' => array(

@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\destination;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DestinationController extends Controller
 {
@@ -24,13 +25,11 @@ class DestinationController extends Controller
     }
 
     public function insert(Request $request){
-        // dd($request);
         // $request->validate([
-
         //     'title' => 'required|string|max:255',
         //     'city' => 'required|string|max:255',
         //     'slug' => 'required|string|max:255|unique:destination,slug',
-        //     // 'category_id' => 'required|exists:category,id',
+        //     'category_id' => 'required|exists:category,id',
         //     'latitude' => 'required|numeric|between:-90,90',
         //     'longitude' => 'required|numeric|between:-180,180',
         //     'image' => 'required|image|mimes:png,jpg,jpeg|max:2048',
@@ -64,7 +63,7 @@ class DestinationController extends Controller
         $destination->additional_information = $request->additional_information;
         $destination->status = $request->status;
         $destination->save();
-
+        DB::commit();
         return redirect()->route('destination.list')->with('success', 'Create Destination Successfully');
     }
 
