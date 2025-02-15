@@ -55,6 +55,8 @@ class DestinationController extends Controller
         $destination->category_id= $request->category_id;
         $price = str_replace('.', '', $request->price);
         $destination->price = $price;
+        $destination->open_time = $request->open_time;
+        $destination->closed_time = $request->closed_time;
         $destination->latitude = $request->latitude;
         $destination->longitude = $request->longitude;
         $destination->short_description = $request->short_description;
@@ -63,7 +65,6 @@ class DestinationController extends Controller
         $destination->additional_information = $request->additional_information;
         $destination->status = $request->status;
         $destination->save();
-        DB::commit();
         return redirect()->route('destination.list')->with('success', 'Create Destination Successfully');
     }
 

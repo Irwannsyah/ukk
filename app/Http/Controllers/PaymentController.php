@@ -10,39 +10,67 @@ use App\Models\payment;
 use Dotenv\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Midtrans\Snap;
 use PHPUnit\Framework\MockObject\ReturnValueNotConfiguredException;
 
 class PaymentController extends Controller
 {
-    public function checkout($id)
+    // public function checkout($id)
+    // {
+    //     $data['destination'] = destination::with('category')->find($id);
+    //     if (!$data['destination']) {
+    //         return redirect()->back()->with('error', 'Destinasi Tidak ditemukan');
+    //     }
+    //         $data['header_title'] = 'Checkout';
+    //     return view('payment.checkout', $data);
+
+    // }
+
+    // public function checkoutInsert(Request $request){
+    //     $order = new Order();
+    //     $order->order_id = 'ORD-' . strtoupper(Str::random(10));
+    //     $order->user_id = auth()->user()->id;
+    //     $order->destination_id = $request->destination_id;
+    //     $order->total_price = $request->total_price;
+    //     $order->ticket_quantity = $request->ticket_quantity;
+    //     $order->visit_date = $request->visit_date;
+    //     $order->save();
+
+    //     return redirect()->route('user.payment', ['id' => $order->id])->with('success', 'Pesanan berhasil dibuat');
+    // }
+
+    public function showPayment()
     {
-        $data['destination'] = destination::with('category')->find($id);
-        if (!$data['destination']) {
-            return redirect()->back()->with('error', 'Destinasi Tidak ditemukan');
+        $snapToken = session('snapToken');
+        $header_title = session('header_title');
+        $destination = session('destination');
+        $visit_date = session('visit_date');
+        $ticket = session('ticket_quantity');
+
+        if(!$snapToken || !$destination) {
+            return redirect()->route('user.dashbaord')->with('error', 'Session expired. Please try again.');
         }
-            $data['header_title'] = 'Checkout';
-        return view('payment.checkout', $data);
+        return view('payment.payment', compact('snapToken', 'header_title', 'destination', 'visit_date', 'ticket'));
 
     }
+    public function payment(Request $request)
+    {
 
-    public function checkoutInsert(Request $request){
-        $order = new Order();
-        $order->order_id = 'ORD-' . strtoupper(Str::random(10));
-        $order->user_id = auth()->user()->id;
-        $order->destination_id = $request->destination_id;
-        $order->total_price = $request->total_price;
-        $order->ticket_quantity = $request->ticket_quantity;
-        $order->visit_date = $request->visit_date;
-        $order->save();
+        $request->validate([
+            'destination_id' => 'required|exists:destination,id',
+            'visit_date' => 'required|date',
+            'ticket_quantity' => 'required|integer|min:1',
+        ]);
+        $visit_date = $request->input('visit_date');
+        $ticket_quantity = $request->input('ticket_quantity');
+        $total_price = $request->input('total_price');
+        $price = $request->input('price');
 
-        return redirect()->route('user.payment', ['id' => $order->id])->with('success', 'Pesanan berhasil dibuat');
-    }
+        $destination = destination::findOrFail($request->destination_id);
 
-
-    public function payment($orderId){
-
-        $order = Order::getSingle($orderId);
         \Midtrans\Config::$serverKey = config('midtrans.serverKey');
         \Midtrans\Config::$isProduction = false;
         \Midtrans\Config::$isSanitized = true;
@@ -50,43 +78,67 @@ class PaymentController extends Controller
 
         $params = array(
             'transaction_details' => array(
-                'order_id' => $order->order_id,
-                'gross_amount' => $order->total_price,
+                'order_id' => "ORD-" . str::random(10),
+                'gross_amount' => $total_price,
             ),
             'item_details' => array(
                 [
                     'id' => 'a1',
-                    'price' => $order->destination->price,
-                    'quantity' => $order->ticket_quantity,
-                    'name' => $order->destination->title,
+                    'price' => $price,
+                    'quantity' => $ticket_quantity,
+                    'name' => $destination->title,
                 ]
             ),
             'customer_details' => array(
-                'first_name' => $order->user->name,
-                'email' => $order->user->email,
-                'phone' => $order->user->phone,
+                'first_name' => "Auth::user()->name",
+                'email' => "wan@gmail.com",
+                'phone' => "Auth::user()->phone",
             ),
         );
 
         $snapToken = \Midtrans\Snap::getSnapToken($params);
-        $data = [
-            'snapToken' => $snapToken,
-            'header_title' => 'Payment',
-            'order' => $order,
-        ];
-        return view('payment.payment', $data);
+        // $data = [
+        //     'snapToken' => $snapToken,
+        //     'header_title' => 'Payment',
+        //     'destination' => $destination,
+        // ];
+
+        session()->put('snapToken', $snapToken);
+        session()->put('header_title', 'payment');
+        session()->put('destination', $destination);
+        session()->put('ticket_quantity', $ticket_quantity);
+        session()->put('visit_date', $visit_date);
+
+        return redirect()->route('user.showPayment');
     }
 
-    public function payment_post(Request $request){
-        $json= json_decode($request->get('json'));
+    public function payment_post(Request $request)
+    {
+        $json = json_decode($request->get('json'));
         $payment = new payment();
         $payment->status = $json->transaction_status;
-        $payment->name = $request->name;
+        $payment->user_id = $request->user_id;
+        $payment->destination_id = $request->destination_id;
         $payment->email = $request->email;
+        $payment->ticket = $request->ticket;
+        $payment->visit_date = $request->visit_date;
         $payment->transaction_id = $json->transaction_id;
         $payment->order_id = $json->order_id;
         $payment->gross_amount = $json->gross_amount;
         $payment->paymen_type = $json->payment_type;
         return $payment->save() ? redirect()->route('user.dashbaord')->with('success', 'Pembayaran telah berhasil dilakukan') : redirect()->route('user.dashbaord')->with('failed', 'Pembayaran Gagal');
+    }
+
+
+    public function callback(Request $request)
+    {
+        $serverKey = config('midtrans.serverKey');
+        $hashed = hash("sha512", $request->order_id . $request->status_code . $request->gross_amount . $serverKey);
+        if($hashed == $request->signature_key){
+            if($request->transaction_status == "capture" || $request->transaction_status == "settlement"){
+                $payment = payment::where('order_id', $request->order_id)->first();
+                $payment->update(['status' => 'Paid']);
+            }
+        }
     }
 }

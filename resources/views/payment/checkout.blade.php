@@ -10,64 +10,61 @@
 
 
 @section('content')
-    <section class="max-w-screen-xl mx-auto bg-white mt-12 p-6 shadow-lg rounded-lg">
-        <div class="max-w-lg mx-auto">
-            <form action="" method="POST" class="space-y-6">
+    <section>
+            <form action="" method="POST" class="max-w-screen-xl mx-auto bg-white mt-12 p-6 shadow-lg rounded-lg">
                 @csrf
-                <!-- Menampilkan nama pemesan -->
-                <div>
-                    <label for="destination_name" class="block text-sm font-medium text-gray-700">Pemesan:</label>
-                    <h1>{{ auth()->user()->name }}</h1>
-                    <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                </div>
+                <div class="flex gap-4">
+                    <div class="flex-[40%]">
+                        <img src="{{ asset('uploads/destination/' . $destination->image) }}" alt="" class="rounded-md object-cover">
+                    </div>
+                    <div class="flex-[60%] flex-col space-y-2 mb-8">
+                        <div>
+                            <input type="hidden" id="destination_id" name="destination_id" value="{{ $destination->id }}">
+                            <h4 class="text-4xl font-semibold">Tiket Wisata {{ $destination->title }}</h4>
+                        </div>
+                        <div>
+                            <label for="visit_date" class="block text-base font-medium text-gray-700 mb-3">Tanggal Liburan:</label>
+                            <input type="date" id="visit_date" name="visit_date"
+                                class="w-full px-4 py-2 border-gray-300 text-lg text-gray-900 rounded-md shadow-sm bg-gray-100 cursor-pointer">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Pemesan:</label>
+                            <h4 class="text-xl">{{ auth()->user()->name }}</h4>
+                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                        </div>
 
-                <!-- Menampilkan nama destinasi -->
-                <div>
-                    <label for="destination_name" class="block text-sm font-medium text-gray-700">Destinasi:</label>
-                    <input type="hidden" id="destination_id" name="destination_id" value="{{ $destination->id }}">
-                    <h1>{{ $destination->title }}</h1>
-                </div>
 
-                <!-- Input untuk jumlah tiket -->
-                <div>
-                    <label for="ticket_quantity" class="block text-sm font-medium text-gray-700">Jumlah Tiket:</label>
-                    <input type="number" id="ticket_quantity" name="ticket_quantity" value="1" min="1"
-                        oninput="updateTotalPrice()"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:bg-gray-50">
+                        <div>
+                            <label for="ticket_quantity" class="block text-sm font-medium text-gray-700">Jumlah Tiket:</label>
+                            <input type="number" id="ticket_quantity" name="ticket_quantity" value="1" min="1"
+                                oninput="updateTotalPrice()"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:bg-gray-50">
 
-                </div>
+                        </div>
 
-                <!-- Menampilkan harga per tiket -->
-                <div>
-                    <label for="price" class="block text-sm font-medium text-gray-700">Harga Per Tiket:</label>
-                    <div id="price"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-700 flex items-center gap-1">
-                        <span class="text-lg font-semibold">Rp</span>
-                        <span class="text-lg font-semibold">{{ number_format($destination->price, 0, ',', '.') }}</span>
+                        <div class="flex items-center gap-2 w-full mb-4">
+                            <div class="flex-[50%]">
+                                <label for="price" class="block text-sm font-medium text-gray-700">Harga Per Tiket:</label>
+                                <div id="price"
+                                    class="w-full px-4 py-2 border  rounded-lg  text-gray-700 flex items-center gap-1">
+                                    <span class="text-lg font-semibold">Rp</span>
+                                    <span class="text-lg font-semibold">{{ number_format($destination->price, 0, ',', '.') }}</span>
+                                </div>
+                            </div>
+                            <div class="flex-[50%]">
+                                <label for="total_price" class="block text-sm font-medium text-gray-700">Total Harga:</label>
+                                <input type="text" name="total_price" id="total_price"
+                                    class="w-full px-4 py-2 border border-gray-400 text-lg text-gray-900 rounded-md shadow-sm  cursor-not-allowed"
+                                    value="" readonly>
+                            </div>
+                        </div>
+                        <button type="submit"
+                            class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none">
+                            Checkout
+                        </button>
                     </div>
                 </div>
-
-                <!-- Menampilkan total harga -->
-                <div>
-                    <label for="total_price" class="block text-sm font-medium text-gray-700">Total Harga:</label>
-                    <input type="text" name="total_price" id="total_price"
-                        class="w-full px-4 py-2 border-gray-300 text-lg text-gray-900 rounded-md shadow-sm bg-gray-100 cursor-not-allowed"
-                        value="" readonly>
-                </div>
-                <div>
-                    <label for="visit_date" class="block text-sm font-medium text-gray-700">Tanggal Liburan:</label>
-                    <input type="date" id="visit_date" name="visit_date"
-                        class="w-full px-4 py-2 border-gray-300 text-lg text-gray-900 rounded-md shadow-sm bg-gray-100 cursor-pointer">
-                </div>
-                <!-- Tombol checkout -->
-                <div>
-                    <button type="submit"
-                        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none">
-                        Checkout
-                    </button>
-                </div>
             </form>
-        </div>
     </section>
 
     </form>

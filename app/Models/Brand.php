@@ -13,4 +13,8 @@ class Brand extends Model
         'name',
         'image'
     ];
+
+    static public function getSingle($id){
+        return self::find($id);
+    }
 }

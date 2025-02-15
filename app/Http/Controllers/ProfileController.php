@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,8 +17,9 @@ class ProfileController extends Controller
     }
     public function riwayat()
     {
+        $data['paid'] = payment::where('user_id', Auth::id())->get();
         $data['header_title'] = 'Riwayat';
-        return view('profile.riwayat');
+        return view('profile.riwayat', $data);
     }
     public function ticket()
     {

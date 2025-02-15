@@ -29,7 +29,7 @@
 
             <li>
                 @if (Auth::check())
-                    <a href="{{ route('user.profile') }}">
+                    <a href="{{ route('user.profileprofile') }}">
                         <img src="{{ asset('assets/img/placeholderImg/100x100.png') }}" alt="Profile Picture"
                             class="w-16 h-16 rounded-full border-2 border-gray-300 object-cover">
 

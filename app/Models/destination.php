@@ -44,9 +44,15 @@ class destination extends Model
         return $this->belongsTo(category::class, 'category_id');
     }
 
+    public function payment(){
+        return $this->hasMany(payment::class);
+    }
+
     static public function getSingle($id){
         return self::find($id);
     }
+
+
 
     // public function formatPrice()
     // {

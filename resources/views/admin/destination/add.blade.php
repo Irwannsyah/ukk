@@ -2,6 +2,7 @@
 @section('style')
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
 @endsection
 
 @section('content')
@@ -77,6 +78,16 @@
                                         <label>Description<span style="color: red">*</span></label>
                                         <input type="textarea" class="form-control " name="description"
                                             value="{{ old('description') }}" required placeholder="Description">
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+                                            <label>Waktu Buka</label>
+                                            <input type="time" class="form-control" name="open_time" >
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>Waktu Tutup</label>
+                                            <input type="time" class="form-control" name="closed_time" >
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Additional Information<span style="color: red">*</span></label>

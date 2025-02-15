@@ -23,7 +23,8 @@
                         class="w-full h-auto object-cover aspect-[4/3] rounded-se-3xl">
                 </a>
                 <!-- Small image 2 -->
-                <a href="{{ asset('uploads/destination/' . $Destination->image) }}" data-fancybox="gallery" class="relative">
+                <a href="{{ asset('uploads/destination/' . $Destination->image) }}" data-fancybox="gallery"
+                    class="relative">
                     <img src="{{ asset('uploads/destination/' . $Destination->image) }}" alt="Small image 2"
                         class="w-full h-auto object-cover aspect-[4/3] rounded-ee-3xl">
                     <span
@@ -67,13 +68,30 @@
                 <div class="w-full p-4 rounded-xl border">
                     <h4 class="text-gray-300 font-semibold mb-12">Mulai dari <br> <span class="text-2xl text-green-500"> Rp
                             {{ number_format($Destination->price, 0, ',', '.') }}</span></h4>
-                    <div class="mt-6">
-                        <a href="{{ url('checkout/' . $Destination->id) }}"
-                            class=" w-full border border-gray-300 shadow-sm px-4 py-2 text-gray-700 flex justify-center hover:bg-opacity-90 items-center gap-4  bg-[#9c2f86] rounded-lg ">
-                            <span class="text-lg font-semibold text-white">Pesan</span>
-                        </a>
-                    </div>
+                            <form action="" method="POST">
+                                @csrf
+                                <div class="flex flex-col gap-2">
+                                    <input type="date" id="visit_date" name="visit_date">
+                                    <div class="flex items-center gap-2">
+                                        <h2 class="text-sm">Jumlah Ticket: </h2>
+                                        <input type="number" value="1" id="ticket_quantity" name="ticket_quantity" oninput= "updateTotalPrice()"
+                                            min="1" class="border border-gray-600 p-1 w-32 rounded-md">
+                                        <input type="hidden" name="price" value="{{ $Destination->price }}">
 
+                                        <input type="hidden" name="destination_id" id="" value="{{ $Destination->id }}">
+                                    </div>
+                                    <input type="text" name="total_price" id="total_price"
+                                        class="w-full px-4 py-2 border border-gray-400 text-lg text-gray-900 rounded-md shadow-sm  cursor-not-allowed"
+                                        value="" readonly>
+                                </div>
+                                {{-- <a href="{{ url('checkout/' . $Destination->id) }}"
+                                    class=" w-full border border-gray-300 shadow-sm px-4 py-2 text-gray-700 flex justify-center hover:bg-opacity-90 items-center gap-4  bg-[#9c2f86] rounded-lg ">
+                                    <span class="text-lg font-semibold text-white">Pesan</span>
+                                </a> --}}
+                                <button type="submit">Pesan</button>
+                            </form>
+                    <div class="mt-6">
+                    </div>
                 </div>
             </div>
         </div>
@@ -84,22 +102,49 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         @if (session('sweet_alert') && session('sweet_alert.showLogin'))
-        Swal.fire({
-            icon: '{{ session('sweet_alert.icon') }}',
-            title: '{{ session('sweet_alert.title') }}',
-            text: '{{ session('sweet_alert.text') }}',
-            showCancelButton: true,
-            confirmButtonText: 'Login',
-            cancelButtonText: 'Batal',
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = "{{ route('user.login') }}";
-            }
-        });
-    @endif
-</script>
+            Swal.fire({
+                icon: '{{ session('sweet_alert.icon') }}',
+                title: '{{ session('sweet_alert.title') }}',
+                text: '{{ session('sweet_alert.text') }}',
+                showCancelButton: true,
+                confirmButtonText: 'Login',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "{{ route('user.login') }}";
+                }
+            });
+        @endif
+
+        const visitDateInput = document.getElementById('visit_date');
+
+        // Mendapatkan tanggal hari ini dalam format YYYY-MM-DD
+        const today = new Date().toISOString().split('T')[0];
+
+        // Mengatur nilai default input dengan tanggal hari ini
+        visitDateInput.value = today;
+
+        // Mengatur batasan agar pengguna tidak bisa memilih tanggal kemarin
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1); // Mengurangi satu hari dari hari ini
+        const yesterdayDate = yesterday.toISOString().split('T')[0]; // Format YYYY-MM-DD
+
+        visitDateInput.setAttribute('min', today);
+
+        function updateTotalPrice() {
+            const ticketQuantity = document.getElementById('ticket_quantity').value;
+            const pricePerTicket = {{ $Destination->price }};
+            const totalPrice = ticketQuantity * pricePerTicket;
+
+            // Format total harga dengan Intl.NumberFormat
+            const formattedPrice = 'Rp ' + new Intl.NumberFormat('id-ID').format(totalPrice);
+
+            // Tampilkan total harga di input
+            document.getElementById('total_price').value = formattedPrice;
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>

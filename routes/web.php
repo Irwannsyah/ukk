@@ -14,6 +14,7 @@ use App\Http\Controllers\AuthUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProfileController;
 use App\Models\destination;
 use App\Models\payment;
@@ -73,9 +74,10 @@ Route::middleware('admin')->group(function() {
     });
 });
 
+Route::get('pdf/view/{transaction_id}', [PDFController::class, 'index']);
+
 Route::as('user.')->group(function(){
     Route::get('/', [HomepageController::class, 'dashboard'])->name('dashbaord');
-
 
     Route::get('login', [AuthUserController::class, 'login'])->name('login');
     Route::post('login', [AuthUserController::class, 'login_user'])->name('login_user');
@@ -86,16 +88,20 @@ Route::as('user.')->group(function(){
     Route::post('logout', [AuthUserController::class, 'logout_user'])->name('logout');
 
     Route::get('detail/{id}', [HomepageController::class, 'detail'])->name('detail');
+    Route::post('detail/{id}', [PaymentController::class, 'payment'])->name('payment');
     Route::get('category/{id}', [HomepageController::class, 'category'])->name('category');
 
-    Route::middleware('user')->group(function(){
-        Route::get('checkout/{id}', [PaymentController::class, 'checkout'])->name('checkout');
-        Route::post('checkout/{id}', [PaymentController::class, 'checkoutInsert'])->name('checkoutInsert');
-        Route::get('payment/{id}', [PaymentController::class, 'payment'])->name('payment');
+
+    Route::middleware(['user'])->group(function(){
+        // Route::get('checkout/{id}', [PaymentController::class, 'checkout'])->name('checkout');
+        // Route::post('checkout/{id}', [PaymentController::class, 'checkoutInsert'])->name('checkoutInsert');
+        Route::get('payment', [PaymentController::class, 'showPayment'])->name('showPayment');
         Route::post('payment',  [PaymentController::class, 'payment_post'])->name('paymentpost');
 
-        Route::get('profile', [ProfileController::class, 'profile'])->name('profile');
-        Route::get('profile/riwayatorder', [ProfileController::class, 'riwayat'])->name('riwayat');
+        Route::as('profile')->group(function(){
+            Route::get('profile/user', [ProfileController::class, 'profile'])->name('profile');
+            Route::get('profile/riwayatorder', [ProfileController::class, 'riwayat'])->name('riwayat');
+        });
     });
 
 });

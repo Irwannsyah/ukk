@@ -21,24 +21,27 @@
 </head>
 
 <body>
-    <!-- @TODO: You can add the desired ID as a reference for the embedId parameter. -->
-    <div id="snap-container" class="flex items-center justify-center min-h-screen">
-        <form action="{{ route('user.paymentpost') }}" method="POST" id="submit_form" class="max-w-screen-md mx-auto bg-white rounded-md">
-            @csrf
-            <div class="grid grid-cols-2">
-                <h4>{{ $order->order_id }}</h4>
-                <h4>{{ $order->user->name }}</h4>
-                <h4>{{ $order->destination->title }}</h4>
-                <h4>{{ $order->total_price }}</h4>
-             </div>
+  <button id="pay-button">Pay!</button>
+  <!-- @TODO: You can add the desired ID as a reference for the embedId parameter. -->
+  <div id="snap-container">
+      <form action="{{ route('user.paymentpost') }}" method="POST" id="submit_form">
+    @csrf
+          <div class="grid grid-cols-2">
+              <input type="text" readonly name="destination_id" value="{{ $destination->id }}">
+              <input type="date" readonly name="visit_date" value="{{ $visit_date }}">
+              <input type="text" readonly name="ticket" value="{{ $ticket }}">
+              <input type="text" readonly name="user_id" value="{{ Auth::user()->id }}">
+              <input type="text" readonly name="email" value="{{ Auth::user()->email }}">
+    </div>
 
-            <button id="pay-button">Pay!</button>
-            <input type="hidden" name="json" id="json_callback">
+    <input type="hidden" name="json" id="json_callback">
+
 </form>
 
   </div>
 
   <script type="text/javascript">
+
   var payButton = document.getElementById('pay-button');
       payButton.addEventListener('click', function () {
         // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token

@@ -41,4 +41,11 @@ class BrandController extends Controller
 
         return redirect()->route('brand.list')->with('success', 'Add Brand Successfully');
     }
+
+    public function delete($id){
+        $brand = Brand::getSingle($id);
+
+        $brand->delete();
+        return redirect()->route('brand.list')->with('success', 'Delete Brand Successfully');
+    }
 }

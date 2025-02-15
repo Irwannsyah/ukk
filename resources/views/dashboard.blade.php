@@ -74,7 +74,7 @@
                             <div class="space-y-2">
                                 <h4 class="font-medium text-gray-500 text-xs tracking-widest uppercase">{{ $value->city }}
                                 </h4>
-                                <h1 class="font-bold text-[#484753] text-xl font-monserrat">{{ $value->title }}</h1>
+                                <h1 class="font-bold text-[#484753] text-lg font-monserrat">{{ $value->title }}</h1>
                                 <p class="line-clamp-2 text-sm text-gray-600">
                                     {{ $value->short_description }}
                                 </p>
@@ -100,7 +100,7 @@
             <div id="owl-demo-5" class="owl-carousel gap-2 items-center relative">
                 @foreach ($brands as $value)
                     <div class="w-30 mx-auto">
-                        <img src="{{ asset('uploads/brand/' . $value->image) }}" alt="Brand Image">
+                        <img src="{{ asset('uploads/brand/' . $value->image) }}" alt="Brand Image" class="w-full h-40 object-cover">
                     </div>
                 @endforeach
             </div>

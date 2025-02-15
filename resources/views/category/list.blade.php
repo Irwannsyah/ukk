@@ -43,10 +43,10 @@
                 </div>
                 <div class="grid grid-cols-4 gap-9 mb-9">
                     @foreach ($category->destination as $destination)
-                    <a href=""
+                    <a href="{{ route('user.detail', ['id' => $destination->id]) }}"
                             class=" rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200">
-                            <img src="{{ asset('assets/img/placeholderImg/350x250.png') }}" alt=""
-                                class="rounded-t-lg w-full">
+                            <img src="{{ asset('uploads/destination/' . $destination->image) }}" alt=""
+                                class="object-cover h-48 w-full">
                             <div class="p-4 flex flex-col gap-4">
                                 <div class="space-y-2">
                                     <h4 class="font-medium text-gray-500 text-xs tracking-widest uppercase">{{ $destination->city }}</h4>
@@ -62,7 +62,7 @@
                                     </div>
                                     <div class="text-right">
                                         <h5 class="text-sm text-gray-500">Mulai</h5>
-                                        <span class="text-xl font-semibold text-[#e02e4c]">Rp {{ $destination->formatPrice() }}</span>
+                                        <span class="text-xl font-semibold text-[#e02e4c]">Rp {{ number_format($destination->price, 0, '.', '.') }}</span>
                                     </div>
                                 </div>
                             </div>
