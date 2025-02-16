@@ -135,7 +135,7 @@ class PaymentController extends Controller
         $serverKey = config('midtrans.serverKey');
         $hashed = hash("sha512", $request->order_id . $request->status_code . $request->gross_amount . $serverKey);
         if($hashed == $request->signature_key){
-            if($request->transaction_status == "capture" || $request->transaction_status == "settlement"){
+            if($request->transaction_status == "settlement"){
                 $payment = payment::where('order_id', $request->order_id)->first();
                 $payment->update(['status' => 'Paid']);
             }

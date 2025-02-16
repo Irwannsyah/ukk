@@ -74,7 +74,7 @@ Route::middleware('admin')->group(function() {
     });
 });
 
-Route::get('pdf/view/{transaction_id}', [PDFController::class, 'index']);
+Route::get('/pdf/view/{transaction_id}', [PDFController::class, 'index']);
 
 Route::as('user.')->group(function(){
     Route::get('/', [HomepageController::class, 'dashboard'])->name('dashbaord');

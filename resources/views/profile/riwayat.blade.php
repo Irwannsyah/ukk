@@ -21,6 +21,8 @@
                                 </th>
                                 <th class="border border-gray-300 px-4 py-2 text-left text-gray-600 font-medium">Status
                                 </th>
+                                <th class="border border-gray-300 px-4 py-2 text-left text-gray-600 font-medium">Invoice
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -40,6 +42,14 @@
                                     </td>
                                     <td class="border border-gray-300 px-4 py-2 text-gray-700 text-sm">{{ $pay->status  }}
                                     </td>
+                                    @if ( $pay->status == 'Paid' )    
+                                    <td class="border border-gray-300 px-4 py-2 text-gray-700 text-sm">
+                                        <a href="{{ url('/pdf/view/' . $pay->transaction_id) }}">Inovoice</a>
+                                    </td>
+                                    @else
+                                    <td class="border border-gray-300 px-4 py-2 text-gray-700 text-sm">Sedang menunggu konfirmasi
+                                    </td>
+                                    @endif
                                 </tr>
                             @empty
                                 <tr>

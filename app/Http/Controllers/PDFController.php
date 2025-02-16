@@ -14,7 +14,10 @@ class PDFController extends Controller
     {
         $data = payment::where('transaction_id', $transaction_id)->firstOrFail();
         $mpdf = new \Mpdf\Mpdf();
-        $mpdf->WriteHTML(view('prove.invoice', )->render());
-        $mpdf->Output();
+        $mpdf->WriteHTML(view('prove.invoice', compact('data') )->render());
+
+        return response()->streamDownload(function() use ($mpdf){
+            $mpdf->Output();
+        }, 'invoice_'.$transaction_id.'.pdf');
     }
 }
