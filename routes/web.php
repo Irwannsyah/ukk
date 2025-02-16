@@ -85,11 +85,16 @@ Route::as('user.')->group(function(){
     Route::get('register', [AuthUserController::class, 'register'])->name('register');
     Route::post('register', [AuthUserController::class, 'register_user'])->name('register_user');
 
-    Route::post('logout', [AuthUserController::class, 'logout_user'])->name('logout');
+    Route::get('logout', [AuthUserController::class, 'logout_user'])->name('logout');
 
     Route::get('detail/{id}', [HomepageController::class, 'detail'])->name('detail');
     Route::post('detail/{id}', [PaymentController::class, 'payment'])->name('payment');
     Route::get('category/{id}', [HomepageController::class, 'category'])->name('category');
+
+    Route::get('/forgot_password', [AuthUserController::class, 'forgotPassword'])->name('forgotPassword');
+    Route::post('/process_forgot_password', [AuthUserController::class, 'processForgotPassword'])->name('processForgotPassword');
+    Route::get('/reset_password/{token}', [AuthUserController::class, 'resetPassword'])->name('resetPassword');
+    Route::post('/process_reset_password', [AuthUserController::class, 'processResetPassword'])->name('processResetPassword');
 
 
     Route::middleware(['user'])->group(function(){

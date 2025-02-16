@@ -26,7 +26,7 @@
                 <li>
                     <a href="{{ url('profile/user') }}"
                         class="flex items-center gap-2 px-4 py-2 rounded-md transition duration-200 ease-in-out
-                        @if (Request::segment(2) == 'profile') bg-[#0194f3] text-white @else hover:bg-[#0194f3] hover:text-white text-gray-500 @endif">
+                        @if (Request::segment(2) == 'user') bg-[#0194f3] text-white @else hover:bg-[#0194f3] hover:text-white text-gray-500 @endif">
                         <i class="fa-solid fa-user"></i>
                         <p>Profile</p>
                     </a>
@@ -49,11 +49,7 @@
                     </a>
                 </li>
                 <li>
-                    <form action="{{ route('user.logout') }}" method="POST" class="px-4 py-2">
-                        @csrf
-                        <button class="text-lg text-red-600 hover:text-red-800 transition duration-200">Logout</button>
-
-                    </form>
+                    <a href="{{ route('user.logout') }}" class="bg-red-500">Logout</a>
                 </li>
             </ul>
 

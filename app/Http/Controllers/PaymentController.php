@@ -90,9 +90,9 @@ class PaymentController extends Controller
                 ]
             ),
             'customer_details' => array(
-                'first_name' => "Auth::user()->name",
-                'email' => "wan@gmail.com",
-                'phone' => "Auth::user()->phone",
+                'first_name' => Auth::user()->name,
+                'email' => Auth::user()->email,
+                'phone' => Auth::user()->phone,
             ),
         );
 
@@ -116,7 +116,7 @@ class PaymentController extends Controller
     {
         $json = json_decode($request->get('json'));
         $payment = new payment();
-        $payment->status = $json->transaction_status;
+        $payment->status = ($json->transaction_status == 'settlement' ? 'Paid' : $json->transaction_status );
         $payment->user_id = $request->user_id;
         $payment->destination_id = $request->destination_id;
         $payment->email = $request->email;
@@ -134,11 +134,17 @@ class PaymentController extends Controller
     {
         $serverKey = config('midtrans.serverKey');
         $hashed = hash("sha512", $request->order_id . $request->status_code . $request->gross_amount . $serverKey);
-        if($hashed == $request->signature_key){
-            if($request->transaction_status == "settlement"){
-                $payment = payment::where('order_id', $request->order_id)->first();
+
+        if ($hashed === $request->signature_key) {
+            // Cari data pembayaran berdasarkan order_id
+            $payment = Payment::where('order_id', $request->order_id)->first();
+
+            if ($payment) {
+                // Langsung ubah status menjadi "Paid"
                 $payment->update(['status' => 'Paid']);
+                Log::info("Payment status updated to Paid for Order ID: " . $request->order_id);
             }
         }
     }
+
 }

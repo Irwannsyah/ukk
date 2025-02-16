@@ -20,47 +20,29 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="../../index2.html"><b>Ticket Line</b></a>
+            <a href="../../index2.html"><b>Forgot Password</b></a>
         </div>
         <!-- /.login-logo -->
         <div class="card">
             <div class="card-body login-card-body">
-                <p class="login-box-msg">Sign in to start your session</p>
+                <p class="login-box-msg">Reset Your Password</p>
                 @include('admin.layouts._message')
-                <form action="" method="post">
-                @csrf
+                <form action="{{ route('user.processForgotPassword') }}" method="post">
+                    @csrf
                     <div class="input-group mb-3">
-                        <input type="email" class="form-control" value="{{ old('email') }}" name="email" required placeholder="Email">
+                        <input type="email" class="form-control" value="{{ old('email') }}" name="email" required
+                            placeholder="Email">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
                             </div>
                         </div>
                     </div>
-                    <div class="input-group mb-3">
-                        <input type="password" name="password" class="form-control"  required placeholder="Password">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="icheck-primary">
-                                <input type="checkbox" id="remember" name="remember">
-                                <label for="remember">
-                                    Remember Me
-                                </label>
-                            </div>
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-                        </div>
-                        <!-- /.col -->
+                    <div class="col-5">
+                        <button type="submit" class="btn btn-primary btn-block">Send Email</button>
                     </div>
                 </form>
+
                 <!-- /.social-auth-links -->
                 <p class="mb-1">
                     <a href="{{ route('user.forgotPassword') }}">I forgot my password</a>

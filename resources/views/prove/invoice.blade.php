@@ -55,6 +55,10 @@
             font-size: 18px;
             font-weight: bold;
         }
+        .qr-container {
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -93,7 +97,6 @@
                 </tr>
             </tbody>
         </table>
-
         <p class="total">Total Bayar: Rp {{ number_format($data->gross_amount, 0, ',', '.') }}</p>
     </div>
 
