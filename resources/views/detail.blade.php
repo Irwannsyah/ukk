@@ -1,6 +1,17 @@
 @extends('layouts.app')
 
 @section('style')
+    <style>
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
@@ -11,28 +22,34 @@
     <main class="max-w-screen-xl mx-auto p-4 bg-white min-h-screen font-roboto rounded-lg my-20">
         <div class="grid grid-cols-4 gap-2 mb-6">
             <div class="col-span-3">
-                <a href="{{ asset('uploads/destination/' . $Destination->image) }}" data-fancybox="gallery">
-                    <img src="{{ asset('uploads/destination/' . $Destination->image) }}" alt=""
+                <!-- Gambar besar pertama -->
+                <a href="{{ asset('uploads/destination/' . json_decode($Destination->images)[0]) }}"
+                    data-fancybox="gallery">
+                    <img src="{{ asset('uploads/destination/' . json_decode($Destination->images)[0]) }}" alt=""
                         class="w-full h-auto max-h-[470px] object-cover rounded-l-3xl">
                 </a>
             </div>
             <div class="grid grid-rows-2 gap-2">
-                <!-- Small image 1 -->
-                <a href="{{ asset('uploads/destination/' . $Destination->image) }}" data-fancybox="gallery">
-                    <img src="{{ asset('uploads/destination/' . $Destination->image) }}" alt="Small image 1"
-                        class="w-full h-auto object-cover aspect-[4/3] rounded-se-3xl">
-                </a>
-                <!-- Small image 2 -->
-                <a href="{{ asset('uploads/destination/' . $Destination->image) }}" data-fancybox="gallery"
-                    class="relative">
-                    <img src="{{ asset('uploads/destination/' . $Destination->image) }}" alt="Small image 2"
-                        class="w-full h-auto object-cover aspect-[4/3] rounded-ee-3xl">
-                    <span
-                        class="px-4 py-1 absolute focus:ring-1 bottom-4 right-4 bg-primary text-white font-medium rounded-md">Gallery</span>
-                </a>
+                @foreach (json_decode($Destination->images) as $key => $image)
+                    <!-- Small image 1 -->
+                    @if ($key == 0)
+                        <a href="{{ asset('uploads/destination/' . $image) }}" data-fancybox="gallery">
+                            <img src="{{ asset('uploads/destination/' . $image) }}" alt="Small image 1"
+                                class="w-full h-auto object-cover aspect-[4/3] rounded-se-3xl">
+                        </a>
+                    @elseif ($key == 1)
+                        <!-- Small image 2 -->
+                        <a href="{{ asset('uploads/destination/' . $image) }}" data-fancybox="gallery" class="relative">
+                            <img src="{{ asset('uploads/destination/' . $image) }}" alt="Small image 2"
+                                class="w-full h-auto object-cover aspect-[4/3] rounded-ee-3xl">
+                            <span
+                                class="px-4 py-1 absolute focus:ring-1 bottom-4 right-4 bg-primary text-white font-medium rounded-md">Gallery</span>
+                        </a>
+                    @endif
+                @endforeach
             </div>
-
         </div>
+
         <div class="flex justify-between gap-4">
             <div class="md:basis-[75%]  ">
                 <h1 class="text-[32px] font-semibold  mb-9">Tiket Wisata {{ $Destination->title }}</h1>
@@ -63,33 +80,121 @@
                         <div class="w-full h-56" id="map"></div>
                     </li>
                 </ul>
-            </div>
-            <div class="md:basis-[25%]  ">
-                <div class="w-full p-4 rounded-xl border">
-                    <h4 class="text-gray-300 font-semibold mb-12">Mulai dari <br> <span class="text-2xl text-green-500"> Rp
-                            {{ number_format($Destination->price, 0, ',', '.') }}</span></h4>
-                            <form action="" method="POST">
-                                @csrf
-                                <div class="flex flex-col gap-2">
-                                    <input type="date" id="visit_date" name="visit_date">
-                                    <div class="flex items-center gap-2">
-                                        <h2 class="text-sm">Jumlah Ticket: </h2>
-                                        <input type="number" value="1" id="ticket_quantity" name="ticket_quantity" oninput= "updateTotalPrice()"
-                                            min="1" class="border border-gray-600 p-1 w-32 rounded-md">
-                                        <input type="hidden" name="price" value="{{ $Destination->price }}">
-
-                                        <input type="hidden" name="destination_id" id="" value="{{ $Destination->id }}">
-                                    </div>
-                                    <input type="text" name="total_price" id="total_price"
-                                        class="w-full px-4 py-2 border border-gray-400 text-lg text-gray-900 rounded-md shadow-sm  cursor-not-allowed"
-                                        value="" readonly>
+                @if (Auth::check() && $hasOrder)
+                    <div class="mt-6 bg-white p-6 rounded-lg shadow-md mb-8">
+                        <h2 class="text-lg font-semibold mb-4">Tulis Ulasan Anda</h2>
+                        <div class="flex items-center gap-2">
+                            <div class="font-semibold mb-3">-- {{ Auth::user()->name }}</div>
+                        </div>
+                        <form action="{{ url('/sendReview') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="destination_id" value="{{ $Destination->id }}">
+                            {{-- Rating (Bintang Klikable) --}}
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700">Rating</label>
+                                <div class="flex gap-2 text-yellow-400 text-2xl cursor-pointer" id="star-rating">
+                                    <i class="fa-regular fa-star" data-value="1"></i>
+                                    <i class="fa-regular fa-star" data-value="2"></i>
+                                    <i class="fa-regular fa-star" data-value="3"></i>
+                                    <i class="fa-regular fa-star" data-value="4"></i>
+                                    <i class="fa-regular fa-star" data-value="5"></i>
                                 </div>
-                                {{-- <a href="{{ url('checkout/' . $Destination->id) }}"
-                                    class=" w-full border border-gray-300 shadow-sm px-4 py-2 text-gray-700 flex justify-center hover:bg-opacity-90 items-center gap-4  bg-[#9c2f86] rounded-lg ">
-                                    <span class="text-lg font-semibold text-white">Pesan</span>
-                                </a> --}}
-                                <button type="submit">Pesan</button>
-                            </form>
+                                <input type="hidden" name="rating" id="rating" value="0">
+                            </div>
+
+                            {{-- Review Textarea --}}
+                            <div class="mb-4">
+                                <label for="review" class="block text-sm font-medium text-gray-700">Ulasan</label>
+                                <textarea name="review" id="review" rows="4" required
+                                    class="w-full border border-gray-300 p-3 rounded-md focus:ring-primary focus:border-primary min-h-[100px]"
+                                    placeholder="Bagikan pengalaman Anda..."></textarea>
+
+                            </div>
+
+                            {{-- Tombol Submit --}}
+                            <button type="submit"
+                                class="w-full bg-primary text-black bg-purple-600 py-2 rounded-md font-semibold hover:bg-opacity-90 transition">
+                                Kirim Ulasan
+                            </button>
+                        </form>
+                    </div>
+                @else
+                    <p class="text-gray-500 italic">Anda harus membeli tiket dan menyelesaikan pembayaran sebelum memberikan
+                        ulasan.</p>
+                @endif
+                <div class="grid grid-cols-3 gap-4">
+                    @foreach ($review as $view)
+                        <div class="mb-6 p-4 border border-gray-300">
+                            <!-- Nama pengguna (Jika ada relasi User) -->
+                            <div class="flex items-center gap-2 mb-2">
+                                <strong class="text-lg font-semibold text-gray-800">{{ $view->user->name }}</strong>
+                                <span class="text-sm text-gray-500">{{ $view->created_at->format('d M Y') }}</span>
+                            </div>
+                            <!-- Bintang rating -->
+                            <div class="flex gap-1 mb-2">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <span class="text-yellow-500">
+                                        @if ($i <= $view->rating)
+                                            ★
+                                        @else
+                                            ☆
+                                        @endif
+                                    </span>
+                                @endfor
+                            </div>
+
+                            <!-- Komentar -->
+                            <div class="text-gray-700">
+                                <h1 class="text-lg font-medium">{{ $view->comment }}</h1>
+                            </div>
+                        </div>
+                    @endforeach
+
+                </div>
+            </div>
+            <div class="md:basis-[25%]">
+                <div class="w-full p-4 rounded-xl border">
+                    <h4 class="text-gray-300 font-semibold mb-12">Mulai dari <br> <span class="text-2xl text-green-500">
+                            Rp
+                            {{ number_format($Destination->price, 0, ',', '.') }}</span></h4>
+                    <form action="" method="POST" class="p-6 bg-white shadow-md rounded-lg">
+                        @csrf
+                        <div class="flex flex-col gap-4">
+                            <!-- Input Tanggal Kunjungan -->
+                            <label for="visit_date" class="text-sm font-medium text-gray-700">Tanggal Kunjungan</label>
+                            <input type="date" id="visit_date" name="visit_date"
+                                class="border border-gray-300 p-2 rounded-md w-full focus:ring-2 focus:ring-primary focus:border-primary">
+
+                            <!-- Input Jumlah Tiket -->
+                            <div>
+                                <label for="ticket_quantity" class="text-sm font-medium text-gray-700">Jumlah
+                                    Tiket</label>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <input type="number" id="ticket_quantity" name="ticket_quantity" value="1"
+                                        min="1" oninput="updateTotalPrice()"
+                                        class="border border-gray-300 p-2 rounded-md w-24 text-center focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                            </div>
+
+                            <!-- Input Harga Total (Readonly) -->
+                            <div>
+                                <label for="total_price" class="text-sm font-medium text-gray-700">Total Harga</label>
+                                <input type="text" name="total_price" id="total_price"
+                                    class="border border-gray-300 p-2 rounded-md w-full text-lg font-semibold text-gray-900 bg-gray-100 cursor-not-allowed"
+                                    value="" readonly>
+                            </div>
+
+                            <!-- Hidden Inputs -->
+                            <input type="hidden" name="price" value="{{ $Destination->price }}">
+                            <input type="hidden" name="destination_id" value="{{ $Destination->id }}">
+
+                            <!-- Tombol Pesan -->
+                            <button type="submit"
+                                class="w-full bg-primary text-black font-semibold py-3 rounded-md hover:bg-opacity-90 transition duration-300 bg-purple-600 text-white">
+                                Pesan Tiket
+                            </button>
+                        </div>
+                    </form>
                     <div class="mt-6">
                     </div>
                 </div>
@@ -133,17 +238,45 @@
 
         visitDateInput.setAttribute('min', today);
 
+        document.addEventListener("DOMContentLoaded", function() {
+            updateTotalPrice(); // Memastikan total_price langsung diisi saat halaman dimuat
+        });
+
         function updateTotalPrice() {
-            const ticketQuantity = document.getElementById('ticket_quantity').value;
+            const ticketQuantityInput = document.getElementById('ticket_quantity');
+            const totalPriceInput = document.getElementById('total_price');
             const pricePerTicket = {{ $Destination->price }};
-            const totalPrice = ticketQuantity * pricePerTicket;
+
+            // Ambil nilai jumlah tiket, jika kosong gunakan 1 sebagai default
+            let ticketQuantity = parseInt(ticketQuantityInput.value) || 1;
+            let totalPrice = ticketQuantity * pricePerTicket;
 
             // Format total harga dengan Intl.NumberFormat
-            const formattedPrice = 'Rp ' + new Intl.NumberFormat('id-ID').format(totalPrice);
-
-            // Tampilkan total harga di input
-            document.getElementById('total_price').value = formattedPrice;
+            totalPriceInput.value = 'Rp ' + new Intl.NumberFormat('id-ID').format(totalPrice);
         }
+
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const stars = document.querySelectorAll("#star-rating i");
+            const ratingInput = document.getElementById("rating");
+
+            stars.forEach(star => {
+                star.addEventListener("click", function() {
+                    const value = this.getAttribute("data-value");
+                    ratingInput.value = value; // Set nilai rating yang dipilih
+
+                    // Reset semua bintang
+                    stars.forEach(s => s.classList.remove("fa-solid", "text-yellow-500"));
+                    stars.forEach(s => s.classList.add("fa-regular"));
+
+                    // Aktifkan bintang sesuai rating yang dipilih
+                    for (let i = 0; i < value; i++) {
+                        stars[i].classList.remove("fa-regular");
+                        stars[i].classList.add("fa-solid", "text-yellow-500");
+                    }
+                });
+            });
+        });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"

@@ -2,7 +2,6 @@
 @section('style')
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-
 @endsection
 
 @section('content')
@@ -33,9 +32,9 @@
                                             value="{{ old('title') }}" required placeholder="Title">
                                     </div>
                                     <div class="form-group">
-                                        <label>Image<span style="color: red">*</span></label>
-                                        <input type="file" class="form-control" name="image"
-                                            value="{{ old('image') }}" style="padding: 5px;" required placeholder="image">
+                                        <label>Images <span style="color: red">*</span></label>
+                                        <input type="file" class="form-control" name="images[]" multiple
+                                            style="padding: 5px;" required>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-6">
@@ -82,11 +81,11 @@
                                     <div class="row">
                                         <div class="form-group col-md-6">
                                             <label>Waktu Buka</label>
-                                            <input type="time" class="form-control" name="open_time" >
+                                            <input type="time" class="form-control" name="open_time">
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>Waktu Tutup</label>
-                                            <input type="time" class="form-control" name="closed_time" >
+                                            <input type="time" class="form-control" name="closed_time">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -104,7 +103,8 @@
                                         <div class="form-group col-md-6">
                                             <label>Longitude<span style="color: red">*</span></label>
                                             <input type="text" class="form-control" id="longitude" name="longitude"
-                                                value="{{ old('longitude', '0') }}" required placeholder="Input Longitude">
+                                                value="{{ old('longitude', '0') }}" required
+                                                placeholder="Input Longitude">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -164,5 +164,5 @@
             e.target.value = value;
         });
     </script>
-    <script src="{{ asset("assets/js/maps.js") }}"></script>
+    <script src="{{ asset('assets/js/maps.js') }}"></script>
 @endsection

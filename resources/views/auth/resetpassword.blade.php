@@ -42,7 +42,6 @@
                             <p class="invalid-feedback">{{ $message }}</p>
                         @enderror
                     </div>
-
                     <div class="input-group mb-3">
                         <input type="password" class="form-control @error('confirm_password') is-invalid @enderror"
                             name="confirm_password" required placeholder="Konfirmasi Password">

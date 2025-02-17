@@ -39,18 +39,19 @@ class DestinationController extends Controller
         //     'additional_information' => 'required|string',
         //     'status' => 'required|in:active,inactive'
         // ]);
-
-        $filename = '';
-        if($request->hasFile('image')){
-            $file = $request->file('image');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/destination/'), $filename);
+        $imageNames = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('uploads/destination/'), $filename);
+                $imageNames[] = $filename; // Menyimpan nama file
+            }
         }
 
         $destination = new destination();
         $destination->title = $request->title;
         $destination->city = $request->city;
-        $destination->image = $filename;
+        $destination->images = json_encode($imageNames); 
         $destination->slug = $request->slug;
         $destination->category_id= $request->category_id;
         $price = str_replace('.', '', $request->price);

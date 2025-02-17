@@ -68,8 +68,17 @@
                 @foreach ($get_record as $value)
                     <a href="{{ route('user.detail', ['id' => $value->id]) }}"
                         class="rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200">
-                        <img src="{{ asset('uploads/destination/' . $value->image) }}" alt="Banner Image"
-                            class="object-cover h-48 w-full">
+                        @foreach ($get_record as $destination)
+                            <div class="destination-item">
+                                @if ($destination->firstImage)
+                                    <img src="{{ asset('uploads/destination/' . $destination->firstImage) }}"
+                                        alt="Banner Image" class="w-full h-auto object-cover rounded-lg">
+                                @else
+                                    <p>No image available.</p>
+                                @endif
+                            </div>
+                        @endforeach
+
                         <div class="p-4 flex flex-col gap-4">
                             <div class="space-y-2">
                                 <h4 class="font-medium text-gray-500 text-xs tracking-widest uppercase">{{ $value->city }}
@@ -100,7 +109,8 @@
             <div id="owl-demo-5" class="owl-carousel gap-2 items-center relative">
                 @foreach ($brands as $value)
                     <div class="w-30 mx-auto">
-                        <img src="{{ asset('uploads/brand/' . $value->image) }}" alt="Brand Image" class="w-full h-40 object-cover">
+                        <img src="{{ asset('uploads/brand/' . $value->image) }}" alt="Brand Image"
+                            class="w-full h-40 object-cover">
                     </div>
                 @endforeach
             </div>

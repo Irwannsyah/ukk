@@ -16,6 +16,7 @@ use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReviewController;
 use App\Models\destination;
 use App\Models\payment;
 use Illuminate\Support\Facades\Auth;
@@ -102,7 +103,7 @@ Route::as('user.')->group(function(){
         // Route::post('checkout/{id}', [PaymentController::class, 'checkoutInsert'])->name('checkoutInsert');
         Route::get('payment', [PaymentController::class, 'showPayment'])->name('showPayment');
         Route::post('payment',  [PaymentController::class, 'payment_post'])->name('paymentpost');
-
+        Route::post('/sendReview', [ReviewController::class, 'sendReview']);
         Route::as('profile')->group(function(){
             Route::get('profile/user', [ProfileController::class, 'profile'])->name('profile');
             Route::get('profile/riwayatorder', [ProfileController::class, 'riwayat'])->name('riwayat');
