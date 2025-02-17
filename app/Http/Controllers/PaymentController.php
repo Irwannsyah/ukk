@@ -115,19 +115,45 @@ class PaymentController extends Controller
     public function payment_post(Request $request)
     {
         $json = json_decode($request->get('json'));
-        $payment = new payment();
-        $payment->status = ($json->transaction_status == 'settlement' ? 'Paid' : $json->transaction_status );
-        $payment->user_id = $request->user_id;
-        $payment->destination_id = $request->destination_id;
-        $payment->email = $request->email;
-        $payment->ticket = $request->ticket;
-        $payment->visit_date = $request->visit_date;
-        $payment->transaction_id = $json->transaction_id;
-        $payment->order_id = $json->order_id;
-        $payment->gross_amount = $json->gross_amount;
-        $payment->paymen_type = $json->payment_type;
-        return $payment->save() ? redirect()->route('user.dashbaord')->with('success', 'Pembayaran telah berhasil dilakukan') : redirect()->route('user.dashbaord')->with('failed', 'Pembayaran Gagal');
+
+        // Periksa apakah data JSON valid
+        if (isset($json->transaction_status) && isset($json->transaction_id)) {
+            $payment = new Payment();
+            $payment->status = ($json->transaction_status == 'settlement' ? 'Paid' : $json->transaction_status);
+            $payment->user_id = $request->user_id;
+            $payment->destination_id = $request->destination_id;
+            $payment->email = $request->email;
+            $payment->ticket = $request->ticket;
+            $payment->visit_date = $request->visit_date;
+            $payment->transaction_id = $json->transaction_id;
+            $payment->order_id = $json->order_id;
+            $payment->gross_amount = $json->gross_amount;
+            $payment->paymen_type = $json->payment_type;
+
+            // Menyimpan data pembayaran
+            if ($payment->save()) {
+                // Jika status pembayaran adalah 'settlement', arahkan ke dashboard
+                if ($json->transaction_status == 'settlement') {
+                    return redirect()->route('user.dashboard')->with('success', 'Pembayaran telah berhasil dilakukan');
+                }
+
+                // Jika status transaksi bukan settlement, tetap di halaman pembayaran
+                return redirect()->route('user.payment')->with('status', 'Pembayaran dalam proses, status: ' . $json->transaction_status);
+            } else {
+                return redirect()->route('user.payment')->with('failed', 'Pembayaran gagal disimpan. Coba lagi');
+            }
+        } else {
+            // Jika transaksi dibatalkan atau terjadi error
+            if (isset($json->transaction_status) && in_array($json->transaction_status, ['cancel', 'error'])) {
+                return redirect()->route('user.payment')->with('failed', 'Pembayaran dibatalkan atau terjadi kesalahan. Silakan coba lagi');
+            }
+
+            // Jika data JSON tidak valid
+            return redirect()->route('user.payment')->with('failed', 'Transaksi tidak valid');
+        }
     }
+
+
 
 
     public function callback(Request $request)

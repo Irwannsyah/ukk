@@ -66,27 +66,24 @@
             <h4 class="text-3xl font-medium mb-9 text-center">Top Destinasi</h4>
             <div class="grid grid-cols-4 gap-9">
                 @foreach ($get_record as $value)
-                    <a href="{{ route('user.detail', ['id' => $value->id]) }}"
-                        class="rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200">
-                        @foreach ($get_record as $destination)
-                            <div class="destination-item">
-                                @if ($destination->firstImage)
-                                    <img src="{{ asset('uploads/destination/' . $destination->firstImage) }}"
-                                        alt="Banner Image" class="w-full h-auto object-cover rounded-lg">
+                    <div class="rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200 block">
+                        <div class="destination-item relative">
+                            <a href="{{ route('user.detail', ['id' => $value->id]) }}">
+                                @if ($value->firstImage)
+                                    <img src="{{ asset('uploads/destination/' . $value->firstImage) }}" alt="Banner Image"
+                                        class="w-full h-auto object-cover rounded-lg">
                                 @else
-                                    <p>No image available.</p>
+                                    <p class="text-center text-gray-500 py-4">No image available.</p>
                                 @endif
-                            </div>
-                        @endforeach
+                            </a>
+                        </div>
 
                         <div class="p-4 flex flex-col gap-4">
                             <div class="space-y-2">
                                 <h4 class="font-medium text-gray-500 text-xs tracking-widest uppercase">{{ $value->city }}
                                 </h4>
                                 <h1 class="font-bold text-[#484753] text-lg font-monserrat">{{ $value->title }}</h1>
-                                <p class="line-clamp-2 text-sm text-gray-600">
-                                    {{ $value->short_description }}
-                                </p>
+                                <p class="line-clamp-2 text-sm text-gray-600">{{ $value->short_description }}</p>
                             </div>
                             <div class="flex items-end justify-between">
                                 <div class="flex items-center gap-1 text-sm">
@@ -100,8 +97,17 @@
                                         {{ number_format($value->price, 0, ',', '.') }}</span>
                                 </div>
                             </div>
+                            {{-- Tombol Wishlist --}}
+                            <form action="{{ route('user.wishlist.add') }}" method="POST" class="mt-2">
+                                @csrf
+                                <input type="hidden" name="destination_id" value="{{ $value->id }}">
+                                <button type="submit"
+                                    class="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition">
+                                    ❤️
+                                </button>
+                            </form>
                         </div>
-                    </a>
+                    </div>
                 @endforeach
             </div>
         </section>
@@ -142,7 +148,8 @@
                 class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
                 <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-sm w-full">
                     <!-- Gambar -->
-                    <img src="{{ asset('assets/img/imgDraw/not_allowed.png') }}" class="w-36 mx-auto" alt="Gambar Guest">
+                    <img src="{{ asset('assets/img/imgDraw/not_allowed.png') }}" class="w-36 mx-auto"
+                        alt="Gambar Guest">
 
                     <!-- Teks -->
                     <h2 class="text-xl font-semibold mb-2">{{ session('failed') }}</h2>

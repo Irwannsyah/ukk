@@ -21,24 +21,68 @@
 </head>
 
 <body>
-  <button id="pay-button">Pay!</button>
-  <!-- @TODO: You can add the desired ID as a reference for the embedId parameter. -->
-  <div id="snap-container">
-      <form action="{{ route('user.paymentpost') }}" method="POST" id="submit_form">
-    @csrf
-          <div class="grid grid-cols-2">
-              <input type="text" readonly name="destination_id" value="{{ $destination->id }}">
-              <input type="date" readonly name="visit_date" value="{{ $visit_date }}">
-              <input type="text" readonly name="ticket" value="{{ $ticket }}">
-              <input type="text" readonly name="user_id" value="{{ Auth::user()->id }}">
-              <input type="text" readonly name="email" value="{{ Auth::user()->email }}">
-    </div>
+<div class="max-w-4xl mx-auto p-6">
+    <!-- Judul Halaman -->
+    <h1 class="text-center text-2xl font-semibold text-gray-800 mb-8">Payment Information</h1>
 
-    <input type="hidden" name="json" id="json_callback">
+    <!-- Formulir Pembayaran -->
+    <form action="{{ route('user.paymentpost') }}" method="POST" id="submit_form" class="bg-white p-6 rounded-lg shadow-lg mb-3">
+        @csrf
+        <!-- Form Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <!-- Destination Name (tampilkan nama destinasi) -->
+            <div class="flex flex-col">
+                <label for="destination_name" class="text-sm font-medium text-gray-600">Destination</label>
+                <input type="text" id="destination_name" name="destination_name" readonly value="{{ $destination->title }}"
+                    class="mt-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500">
+            </div>
 
-</form>
+            <!-- Visit Date -->
+            <div class="flex flex-col">
+                <label for="visit_date" class="text-sm font-medium text-gray-600">Visit Date</label>
+                <input type="date" id="visit_date" name="visit_date" readonly value="{{ $visit_date }}"
+                    class="mt-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500">
+            </div>
 
-  </div>
+            <!-- Ticket Quantity -->
+            <div class="flex flex-col">
+                <label for="ticket" class="text-sm font-medium text-gray-600">Ticket Quantity</label>
+                <input type="text" id="ticket" name="ticket" readonly value="{{ $ticket }}"
+                    class="mt-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500">
+            </div>
+
+            <!-- User Name (tampilkan nama pengguna) -->
+            <div class="flex flex-col">
+                <label for="user_name" class="text-sm font-medium text-gray-600">User</label>
+                <input type="text" id="user_name" name="user_name" readonly value="{{ Auth::user()->name }}"
+                    class="mt-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500">
+            </div>
+
+            <!-- Email -->
+            <div class="flex flex-col">
+                <label for="email" class="text-sm font-medium text-gray-600">Email</label>
+                <input type="text" id="email" name="email" readonly value="{{ Auth::user()->email }}"
+                    class="mt-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500">
+            </div>
+        </div>
+
+        <!-- Hidden Input for Destination ID and User ID -->
+        <input type="hidden" name="destination_id" value="{{ $destination->id }}">
+        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+
+        <!-- Hidden Input for JSON Callback -->
+        <input type="hidden" name="json" id="json_callback">
+
+        <!-- Submit Button -->
+      </form>
+      <div class="text-center">
+          <button type="submit" id="pay-button"
+              class="bg-blue-500 text-white py-3 px-6 rounded-full shadow-md hover:bg-blue-600 transition duration-300">
+              Pay Now
+          </button>
+      </div>
+</div>
+
 
   <script type="text/javascript">
 

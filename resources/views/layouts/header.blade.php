@@ -2,7 +2,7 @@
     <nav class="max-w-screen-xl mx-auto">
         <ul class="flex justify-between items-center">
             <li>
-                    <img src="{{ asset('assets/img/tiqets-logo-primary-600.svg') }}" alt="" class="w-32">
+                <img src="{{ asset('assets/img/tiqets-logo-primary-600.svg') }}" alt="" class="w-32">
             </li>
             <li>
                 <ul class="flex items-center gap-6 px-4 py-2">
@@ -32,11 +32,13 @@
                     <a href="{{ route('user.profileprofile') }}">
                         <img src="{{ asset('assets/img/placeholderImg/100x100.png') }}" alt="Profile Picture"
                             class="w-16 h-16 rounded-full border-2 border-gray-300 object-cover">
-
+                    </a>
+                    <a href="{{ route('user.wishlist.index') }}">
+                        <i class="fa-solid fa-basket-shopping text-xl"></i>
                     </a>
                 @else
                     <div class="flex items-center gap-4">
-                        <a href="">
+                        <a href="{{ route('user.wishlist.index') }}">
                             <i class="fa-solid fa-basket-shopping text-xl"></i>
                         </a>
                         <a href="{{ route('user.login') }}">

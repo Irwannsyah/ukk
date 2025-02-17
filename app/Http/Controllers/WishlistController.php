@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Wishlist;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+use function PHPUnit\Framework\returnSelf;
+
+class WishlistController extends Controller
+{
+    public function index(){
+        $wishlist = Wishlist::where('user_id', Auth::id())
+        ->with('destination')
+        ->get()
+        ->map(function ($wishlistItem) {
+            // Ambil satu gambar pertama dari JSON images
+            $images = json_decode($wishlistItem->destination->images, true);
+            $wishlistItem->destination->firstImage = $images[0] ?? null;
+            return $wishlistItem;
+        });
+        return view('wishlist.list', compact('wishlist'));
+    }
+
+    public function add(Request $request)
+    {
+        $request->validate([
+            'destination_id' => 'required|exists:destination,id'
+        ]);
+
+        $destinationId = $request->input('destination_id');
+        $user = auth()->user();
+
+        $wishlist = Wishlist::where('user_id', $user->id)
+                            ->where('destination_id', $destinationId)
+                            ->first();
+
+        if($wishlist) {
+            return redirect()->back()->with('error', 'Destinasi Sudah ada di wishlist');
+        }
+
+        Wishlist::create([
+            'user_id' => $user->id,
+            'destination_id' => $destinationId,
+        ]);
+
+        return redirect()->back()->with('success', 'Destinsi berhasil ditambahkan di wishlist!');
+    }
+}

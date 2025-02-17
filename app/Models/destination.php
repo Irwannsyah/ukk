@@ -63,4 +63,8 @@ class destination extends Model
     public function gallery(){
         return $this->hasMany(gallery::class);
     }
+
+    public function wishlist(){
+        return $this->hasMany(wishlist::class, 'destination_id');
+    }
 }

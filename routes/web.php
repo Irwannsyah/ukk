@@ -17,8 +17,10 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\WishlistController;
 use App\Models\destination;
 use App\Models\payment;
+use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -107,6 +109,11 @@ Route::as('user.')->group(function(){
         Route::as('profile')->group(function(){
             Route::get('profile/user', [ProfileController::class, 'profile'])->name('profile');
             Route::get('profile/riwayatorder', [ProfileController::class, 'riwayat'])->name('riwayat');
+        });
+
+        Route::as('wishlist.')->group(function(){
+            Route::get('/wishlist/list', [WishlistController::class, 'index'])->name('index');
+            Route::post('/wishlist/add', [WishlistController::class, 'add'])->name('add');
         });
     });
 
