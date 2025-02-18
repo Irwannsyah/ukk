@@ -65,7 +65,7 @@
 
     <div class="invoice-container">
         <div class="header">
-            <h2>Invoice</h2>
+            <h2>E-Ticket</h2>
             <p><strong>Status:</strong> {{ $data->status }}</p>
         </div>
 

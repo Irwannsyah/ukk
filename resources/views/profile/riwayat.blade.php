@@ -42,11 +42,11 @@
                                     </td>
                                     <td class="border border-gray-300 px-4 py-2 text-gray-700 text-sm">{{ $pay->status  }}
                                     </td>
-                                    @if ( $pay->status == 'Paid' )    
+                                    @if ( $pay->status == 'settlement')    
                                     <td class="border border-gray-300 px-4 py-2 text-gray-700 text-sm">
                                         <a href="{{ url('/pdf/view/' . $pay->transaction_id) }}">Inovoice</a>
                                     </td>
-                                    @else
+                                    @elseif ($pay->status == 'pending')
                                     <td class="border border-gray-300 px-4 py-2 text-gray-700 text-sm">Sedang menunggu konfirmasi
                                     </td>
                                     @endif

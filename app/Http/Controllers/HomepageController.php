@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\destination;
+use App\Models\Gallery;
 use App\Models\payment;
 use App\Models\Review;
 use App\Models\User;
@@ -16,14 +17,8 @@ class HomepageController extends Controller
     public function dashboard()
     {
         $data['header_title'] = 'Home Page';
-        $data['get_record'] = Destination::with('category')->get()->map(function ($destination) {
-            // Ambil satu gambar pertama dari JSON images
-            $images = json_decode($destination->images, true);
-            $destination->firstImage = $images[0] ?? null;
-            return $destination;
-        });
         $data['get_category'] = Category::with('destination')->get();
-        $data['brands'] = Brand::all();
+        $data['destination'] = destination::with('gallery_image')->get();
         return view('dashboard', $data);
     }
     public function login()
@@ -37,7 +32,8 @@ class HomepageController extends Controller
         return view('auth.register_user', $data);
     }
     public function detail($id){
-        $data['Destination'] = destination::with('category')->find($id);
+
+        $data['Destination'] = destination::with('category', 'gallery_image')->find($id);
         if(!$data['Destination']){
             return redirect()->back()->with('error', 'Destinasi Tidak ditemukan');
         }
@@ -45,12 +41,18 @@ class HomepageController extends Controller
         if(Auth::check()){
             $data['hasOrder'] = payment::where('user_id', Auth::id())
                     ->where('destination_id', $id)
-                    ->where('status', 'paid')
+                    ->where('status', 'settlement')
                     ->exists();
         }
+
+        $data['HasReview'] = Review::where('user_id', Auth::id())
+                                    ->where('destination_id', $id)
+                                    ->exists();
+
         $data['header_title'] = 'Detail';
 
-        $data['review'] = Review::where('destination_id', $id)
+        $data['review'] = Review::with('user')
+                                ->where('destination_id', $id)
                                 ->orderBy('created_at', 'desc')
                                 ->get();
         return view('detail', $data);

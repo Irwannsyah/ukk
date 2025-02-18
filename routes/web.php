@@ -101,8 +101,6 @@ Route::as('user.')->group(function(){
 
 
     Route::middleware(['user'])->group(function(){
-        // Route::get('checkout/{id}', [PaymentController::class, 'checkout'])->name('checkout');
-        // Route::post('checkout/{id}', [PaymentController::class, 'checkoutInsert'])->name('checkoutInsert');
         Route::get('payment', [PaymentController::class, 'showPayment'])->name('showPayment');
         Route::post('payment',  [PaymentController::class, 'payment_post'])->name('paymentpost');
         Route::post('/sendReview', [ReviewController::class, 'sendReview']);

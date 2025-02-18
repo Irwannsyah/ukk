@@ -13,13 +13,7 @@ class WishlistController extends Controller
     public function index(){
         $wishlist = Wishlist::where('user_id', Auth::id())
         ->with('destination')
-        ->get()
-        ->map(function ($wishlistItem) {
-            // Ambil satu gambar pertama dari JSON images
-            $images = json_decode($wishlistItem->destination->images, true);
-            $wishlistItem->destination->firstImage = $images[0] ?? null;
-            return $wishlistItem;
-        });
+        ->get();
         return view('wishlist.list', compact('wishlist'));
     }
 

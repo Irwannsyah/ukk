@@ -60,7 +60,7 @@ class destination extends Model
         return $this->hasMany(Review::class);
     }
 
-    public function gallery(){
+    public function gallery_image(){
         return $this->hasMany(gallery::class);
     }
 

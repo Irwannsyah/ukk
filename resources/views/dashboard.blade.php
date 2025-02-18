@@ -65,19 +65,15 @@
         <section class="mb-9">
             <h4 class="text-3xl font-medium mb-9 text-center">Top Destinasi</h4>
             <div class="grid grid-cols-4 gap-9">
-                @foreach ($get_record as $value)
+                @foreach ($destination as $value)
+                {{-- @dd($value) --}}
                     <div class="rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200 block">
                         <div class="destination-item relative">
                             <a href="{{ route('user.detail', ['id' => $value->id]) }}">
-                                @if ($value->firstImage)
-                                    <img src="{{ asset('uploads/destination/' . $value->firstImage) }}" alt="Banner Image"
-                                        class="w-full h-auto object-cover rounded-lg">
-                                @else
-                                    <p class="text-center text-gray-500 py-4">No image available.</p>
-                                @endif
+                                <img src="{{ asset($value->gallery_image[0]->image) }}"
+                                    alt="Image" class="w-full h-auto object-cover rounded-lg">
                             </a>
                         </div>
-
                         <div class="p-4 flex flex-col gap-4">
                             <div class="space-y-2">
                                 <h4 class="font-medium text-gray-500 text-xs tracking-widest uppercase">{{ $value->city }}
@@ -111,7 +107,7 @@
                 @endforeach
             </div>
         </section>
-        <div class="p-4 bg-white border rounded-xl">
+        {{-- <div class="p-4 bg-white border rounded-xl">
             <div id="owl-demo-5" class="owl-carousel gap-2 items-center relative">
                 @foreach ($brands as $value)
                     <div class="w-30 mx-auto">
@@ -120,7 +116,7 @@
                     </div>
                 @endforeach
             </div>
-        </div>
+        </div> --}}
         @if (!empty(session('success')))
             <div id="popup"
                 class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">

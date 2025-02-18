@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\destination;
+use App\Models\Gallery;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,33 +26,15 @@ class DestinationController extends Controller
     }
 
     public function insert(Request $request){
-        // $request->validate([
-        //     'title' => 'required|string|max:255',
-        //     'city' => 'required|string|max:255',
-        //     'slug' => 'required|string|max:255|unique:destination,slug',
-        //     'category_id' => 'required|exists:category,id',
-        //     'latitude' => 'required|numeric|between:-90,90',
-        //     'longitude' => 'required|numeric|between:-180,180',
-        //     'image' => 'required|image|mimes:png,jpg,jpeg|max:2048',
-        //     'short_description' => 'required|string|max:500',
-        //     'quota_ticket' => 'required|integer|min:1',
-        //     'description' => 'required|string',
-        //     'additional_information' => 'required|string',
-        //     'status' => 'required|in:active,inactive'
-        // ]);
-        $imageNames = [];
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $file) {
-                $filename = time() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('uploads/destination/'), $filename);
-                $imageNames[] = $filename; // Menyimpan nama file
-            }
-        }
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'images' => 'required|array',
+            'images.*' => 'image|mimes:png,jpg,jpeg|max:2048'
+        ]);
 
         $destination = new destination();
         $destination->title = $request->title;
         $destination->city = $request->city;
-        $destination->images = json_encode($imageNames); 
         $destination->slug = $request->slug;
         $destination->category_id= $request->category_id;
         $price = str_replace('.', '', $request->price);
@@ -66,6 +49,20 @@ class DestinationController extends Controller
         $destination->additional_information = $request->additional_information;
         $destination->status = $request->status;
         $destination->save();
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('uploads/destination/'), $filename);
+
+                $galleryImage = new Gallery();
+                $galleryImage->destination_id = $destination->id; // Hubungkan gambar dengan destinasi
+                $galleryImage->image = 'uploads/destination/' . $filename;
+                $galleryImage->save(); 
+            }
+        }
+
+
         return redirect()->route('destination.list')->with('success', 'Create Destination Successfully');
     }
 

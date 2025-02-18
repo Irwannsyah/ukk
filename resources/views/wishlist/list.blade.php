@@ -7,7 +7,7 @@
         <div class="wishlist-item border p-4 rounded-lg shadow-md mb-6 hover:shadow-lg transition-shadow duration-300">
             <div class="flex gap-6">
                 <!-- Gambar Destinasi -->
-                <img src="{{ asset('uploads/destination/' . ($wish->destination->firstImage ?? 'default.jpg')) }}" alt=""
+                <img src="{{ $wish->destination->gallery_image[0]->image }}" alt=""
                     class="w-24 h-24 object-cover rounded-lg shadow-md">
 
                 <!-- Detail Wishlist -->

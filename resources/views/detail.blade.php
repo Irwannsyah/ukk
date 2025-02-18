@@ -23,24 +23,28 @@
         <div class="grid grid-cols-4 gap-2 mb-6">
             <div class="col-span-3">
                 <!-- Gambar besar pertama -->
-                <a href="{{ asset('uploads/destination/' . json_decode($Destination->images)[0]) }}"
-                    data-fancybox="gallery">
-                    <img src="{{ asset('uploads/destination/' . json_decode($Destination->images)[0]) }}" alt=""
-                        class="w-full h-auto max-h-[470px] object-cover rounded-l-3xl">
-                </a>
+                @if ($Destination->gallery_image->count() > 0)
+                    <a href="{{ asset($Destination->gallery_image[0]->image) }}" data-fancybox="gallery">
+                        <img src="{{ asset($Destination->gallery_image[0]->image) }}" alt=""
+                            class="w-full h-auto max-h-[470px] object-cover rounded-l-3xl">
+                    </a>
+                @else
+                    <p>No images available.</p>
+                @endif
             </div>
+
             <div class="grid grid-rows-2 gap-2">
-                @foreach (json_decode($Destination->images) as $key => $image)
-                    <!-- Small image 1 -->
+                @foreach ($Destination->gallery_image as $key => $image)
                     @if ($key == 0)
-                        <a href="{{ asset('uploads/destination/' . $image) }}" data-fancybox="gallery">
-                            <img src="{{ asset('uploads/destination/' . $image) }}" alt="Small image 1"
+                        <!-- Small image 1 -->
+                        <a href="{{ asset($image->image) }}" data-fancybox="gallery">
+                            <img src="{{ asset($image->image) }}" alt="Small image 1"
                                 class="w-full h-auto object-cover aspect-[4/3] rounded-se-3xl">
                         </a>
                     @elseif ($key == 1)
                         <!-- Small image 2 -->
-                        <a href="{{ asset('uploads/destination/' . $image) }}" data-fancybox="gallery" class="relative">
-                            <img src="{{ asset('uploads/destination/' . $image) }}" alt="Small image 2"
+                        <a href="{{ asset($image->image) }}" data-fancybox="gallery" class="relative">
+                            <img src="{{ asset($image->image) }}" alt="Small image 2"
                                 class="w-full h-auto object-cover aspect-[4/3] rounded-ee-3xl">
                             <span
                                 class="px-4 py-1 absolute focus:ring-1 bottom-4 right-4 bg-primary text-white font-medium rounded-md">Gallery</span>
@@ -48,6 +52,7 @@
                     @endif
                 @endforeach
             </div>
+
         </div>
 
         <div class="flex justify-between gap-4">
@@ -80,7 +85,7 @@
                         <div class="w-full h-56" id="map"></div>
                     </li>
                 </ul>
-                @if (Auth::check() && $hasOrder)
+                @if (Auth::check() && $hasOrder && !$HasReview)
                     <div class="mt-6 bg-white p-6 rounded-lg shadow-md mb-8">
                         <h2 class="text-lg font-semibold mb-4">Tulis Ulasan Anda</h2>
                         <div class="flex items-center gap-2">
@@ -89,6 +94,7 @@
                         <form action="{{ url('/sendReview') }}" method="POST">
                             @csrf
                             <input type="hidden" name="destination_id" value="{{ $Destination->id }}">
+
                             {{-- Rating (Bintang Klikable) --}}
                             <div class="mb-4">
                                 <label class="block text-sm font-medium text-gray-700">Rating</label>
@@ -108,7 +114,6 @@
                                 <textarea name="review" id="review" rows="4" required
                                     class="w-full border border-gray-300 p-3 rounded-md focus:ring-primary focus:border-primary min-h-[100px]"
                                     placeholder="Bagikan pengalaman Anda..."></textarea>
-
                             </div>
 
                             {{-- Tombol Submit --}}
@@ -118,13 +123,18 @@
                             </button>
                         </form>
                     </div>
+                @elseif(Auth::check() && $HasReview)
+                    <p class="text-gray-500 italic mb-6 text-center font-semibold">Terimakasih Anda sudah memberikan review
+                        untuk destinasi ini.</p>
                 @else
-                    <p class="text-gray-500 italic">Anda harus membeli tiket dan menyelesaikan pembayaran sebelum memberikan
+                    <p class="text-gray-500 italic text-center font-semibold">Anda harus membeli tiket dan menyelesaikan
+                        pembayaran sebelum memberikan
                         ulasan.</p>
                 @endif
+
                 <div class="grid grid-cols-3 gap-4">
                     @foreach ($review as $view)
-                        <div class="mb-6 p-4 border border-gray-300">
+                        <div class="mb-6 p-4 border border-gray-300 rounded-md">
                             <!-- Nama pengguna (Jika ada relasi User) -->
                             <div class="flex items-center gap-2 mb-2">
                                 <strong class="text-lg font-semibold text-gray-800">{{ $view->user->name }}</strong>
@@ -142,7 +152,6 @@
                                     </span>
                                 @endfor
                             </div>
-
                             <!-- Komentar -->
                             <div class="text-gray-700">
                                 <h1 class="text-lg font-medium">{{ $view->comment }}</h1>
