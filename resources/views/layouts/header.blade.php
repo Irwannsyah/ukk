@@ -39,8 +39,8 @@
                         </a>
 
                         <a href="{{ route('user.profileprofile') }}">
-                            <img src="{{ asset('assets/img/placeholderImg/100x100.png') }}" alt="Profile Picture"
-                                class="w-14 h-14 rounded-full border-2 border-gray-300 object-cover">
+                            <img src="{{ $authUser && $authUser->profile ? asset('storage/profile/' . $authUser->profile) : asset('assets/img/placeholderImg/100x100.png') }}"
+                    class="w-14 h-14 rounded-full border-2 border-gray-300 object-cover" alt="User Profile">
                         </a>
                     </div>
                 @else

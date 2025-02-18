@@ -107,6 +107,8 @@ Route::as('user.')->group(function(){
         Route::as('profile')->group(function(){
             Route::get('profile/user', [ProfileController::class, 'profile'])->name('profile');
             Route::get('profile/riwayatorder', [ProfileController::class, 'riwayat'])->name('riwayat');
+            Route::get('profile/user/form/', [ProfileController::class, 'editForm'])->name('form');
+            Route::post('profile/user/form/', [ProfileController::class, 'updateForm'])->name('update');
         });
 
         Route::as('wishlist.')->group(function(){
