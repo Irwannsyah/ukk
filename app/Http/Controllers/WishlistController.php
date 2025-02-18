@@ -12,7 +12,7 @@ class WishlistController extends Controller
 {
     public function index(){
         $wishlist = Wishlist::where('user_id', Auth::id())
-        ->with('destination')
+        ->with('destination.gallery_image')
         ->get();
         return view('wishlist.list', compact('wishlist'));
     }
@@ -39,6 +39,13 @@ class WishlistController extends Controller
             'destination_id' => $destinationId,
         ]);
 
-        return redirect()->back()->with('success', 'Destinsi berhasil ditambahkan di wishlist!');
+        return redirect()->back()->with('wishlist', 'Destinasi berhasil ditambahkan di wishlist!');
+    }
+
+    public function remove(Request $request){
+        Wishlist::where('user_id', Auth::id())
+                ->where('destination_id', $request->destination_id)
+                ->delete();
+        return back()->with('wishlist', 'Berhasil ditambahkan ke Wishlist');
     }
 }

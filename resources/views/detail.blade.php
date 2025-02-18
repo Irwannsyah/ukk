@@ -132,7 +132,7 @@
                         ulasan.</p>
                 @endif
 
-                <div class="grid grid-cols-3 gap-4">
+                <div class="grid grid-cols-2 gap-4">
                     @foreach ($review as $view)
                         <div class="mb-6 p-4 border border-gray-300 rounded-md">
                             <!-- Nama pengguna (Jika ada relasi User) -->

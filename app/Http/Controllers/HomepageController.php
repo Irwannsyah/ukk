@@ -16,11 +16,22 @@ class HomepageController extends Controller
 {
     public function dashboard()
     {
+        $userId = Auth::id(); // Ambil ID user yang login
+
         $data['header_title'] = 'Home Page';
         $data['get_category'] = Category::with('destination')->get();
-        $data['destination'] = destination::with('gallery_image')->get();
+
+        // Ambil semua destinasi dan cek apakah sudah ada di wishlist user
+        $data['destination'] = Destination::with('gallery_image')
+            ->get()
+            ->map(function ($dest) use ($userId) {
+                $dest->is_wishlisted = $dest->wishlist()->where('user_id', $userId)->exists();
+                return $dest;
+            });
+
         return view('dashboard', $data);
     }
+
     public function login()
     {
         $data['header_title'] = 'Login';

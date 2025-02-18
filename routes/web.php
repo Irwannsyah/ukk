@@ -112,6 +112,7 @@ Route::as('user.')->group(function(){
         Route::as('wishlist.')->group(function(){
             Route::get('/wishlist/list', [WishlistController::class, 'index'])->name('index');
             Route::post('/wishlist/add', [WishlistController::class, 'add'])->name('add');
+            Route::post('/wishlist/remove', [WishlistController::class, 'remove'])->name('remove');
         });
     });
 
