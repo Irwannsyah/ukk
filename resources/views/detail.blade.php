@@ -132,34 +132,52 @@
                         ulasan.</p>
                 @endif
 
-                <div class="grid grid-cols-2 gap-4">
-                    @foreach ($review as $view)
-                        <div class="mb-6 p-4 border border-gray-300 rounded-md">
-                            <!-- Nama pengguna (Jika ada relasi User) -->
-                            <div class="flex items-center gap-2 mb-2">
-                                <strong class="text-lg font-semibold text-gray-800">{{ $view->user->name }}</strong>
-                                <span class="text-sm text-gray-500">{{ $view->created_at->format('d M Y') }}</span>
-                            </div>
-                            <!-- Bintang rating -->
-                            <div class="flex gap-1 mb-2">
-                                @for ($i = 1; $i <= 5; $i++)
-                                    <span class="text-yellow-500">
-                                        @if ($i <= $view->rating)
-                                            ★
-                                        @else
-                                            ☆
-                                        @endif
-                                    </span>
-                                @endfor
-                            </div>
-                            <!-- Komentar -->
-                            <div class="text-gray-700">
-                                <h1 class="text-lg font-medium">{{ $view->comment }}</h1>
-                            </div>
-                        </div>
-                    @endforeach
+                <div class="bg-white shadow-md rounded-lg p-6 max-w-5xl mx-auto">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Ulasan Pelanggan</h2>
 
+                    <!-- Rata-rata Rating -->
+                    <div class="flex items-center justify-center mb-6">
+                        <span class="text-yellow-500 text-3xl font-bold">{{ number_format($review_avg, 1) }}</span>
+                        <div class="flex ml-2">
+                            @for ($i = 1; $i <= 5; $i++)
+                                <span
+                                    class="{{ $i <= round($review_avg) ? 'text-yellow-500' : 'text-gray-300' }} text-xl">★</span>
+                            @endfor
+                        </div>
+                        <span class="ml-2 text-gray-600">({{ $review_count }} ulasan)</span>
+                    </div>
+
+                    <!-- Grid Ulasan -->
+                    <div class="grid grid-cols-2 gap-4">
+                        @foreach ($review as $view)
+                            <div class="p-4 border border-gray-300 rounded-md shadow-sm">
+                                <!-- Nama pengguna + Avatar -->
+                                <div class="flex items-center gap-3 mb-3">
+                                    <img src="{{ $view->user->profile ? asset('storage/profile/' . $view->user->profile) : asset('assets/img/placeholderImg/100x100.png') }}"
+                                        class="w-10 h-10 rounded-full object-cover" alt="User Profile">
+
+                                    <div>
+                                        <strong
+                                            class="text-lg font-semibold text-gray-800">{{ $view->user->name }}</strong>
+                                        <p class="text-sm text-gray-500">{{ $view->created_at->format('d M Y') }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Bintang rating -->
+                                <div class="flex gap-1 mb-2">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <span
+                                            class="{{ $i <= $view->rating ? 'text-yellow-500' : 'text-gray-300' }} text-xl">★</span>
+                                    @endfor
+                                </div>
+
+                                <!-- Komentar -->
+                                <p class="text-gray-700 text-base leading-relaxed">{{ $view->comment }}</p>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
+
             </div>
             <div class="md:basis-[25%]">
                 <div class="w-full p-4 rounded-xl border">

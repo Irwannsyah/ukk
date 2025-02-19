@@ -68,22 +68,32 @@ class DestinationController extends Controller
 
     public function edit($id){
         $data['header_title'] = 'Edit Destination';
+        $data['select'] = Category::all(); // Ambil semua kategori yang tersedia
         $data['get_record'] = destination::getSingle($id);
         $data['get_category'] = Category::getCategory();
         return view('admin.destination.edit', $data);
     }
 
-    public function update($id, Request $request){
-        request()->validate([
-            'slug' => 'required|unique:category,slug,' . $id
+    public function update($id, Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'slug' => 'required|unique:destination,slug,' . $id,
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:png,jpg,jpeg|max:2048'
         ]);
 
-        $destination = destination::getSingle($id);
+        // Ambil data destination berdasarkan ID
+        $destination = Destination::findOrFail($id);
         $destination->title = trim($request->title);
         $destination->city = trim($request->city);
         $destination->slug = trim($request->slug);
         $destination->category_id = trim($request->category_id);
-        $destination->price = trim($request->price);
+
+        // Pastikan format harga tetap konsisten
+        $price = str_replace('.', '', $request->price);
+        $destination->price = $price;
+
         $destination->latitude = trim($request->latitude);
         $destination->longitude = trim($request->longitude);
         $destination->short_description = trim($request->short_description);
@@ -92,7 +102,30 @@ class DestinationController extends Controller
         $destination->status = trim($request->status);
         $destination->save();
 
-        return redirect()->route('destination.list');
+        // **Hapus gambar lama jika ada gambar baru**
+        if ($request->hasFile('images')) {
+            // Hapus gambar lama dari database dan folder
+            $oldImages = Gallery::where('destination_id', $destination->id)->get();
+            foreach ($oldImages as $oldImage) {
+                if (file_exists(public_path($oldImage->image))) {
+                    unlink(public_path($oldImage->image)); // Hapus file
+                }
+                $oldImage->delete(); // Hapus data dari database
+            }
+
+            // Simpan gambar baru
+            foreach ($request->file('images') as $file) {
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('uploads/destination/'), $filename);
+
+                $galleryImage = new Gallery();
+                $galleryImage->destination_id = $destination->id;
+                $galleryImage->image = 'uploads/destination/' . $filename;
+                $galleryImage->save();
+            }
+        }
+
+        return redirect()->route('destination.list')->with('success', 'Destination successfully updated.');
     }
 
     public function delete($id)

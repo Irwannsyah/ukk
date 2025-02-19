@@ -50,20 +50,6 @@
                 <input type="text" id="ticket" name="ticket" readonly value="{{ $ticket }}"
                     class="mt-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500">
             </div>
-
-            <!-- User Name (tampilkan nama pengguna) -->
-            <div class="flex flex-col">
-                <label for="user_name" class="text-sm font-medium text-gray-600">User</label>
-                <input type="text" id="user_name" name="user_name" readonly value="{{ Auth::user()->name }}"
-                    class="mt-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500">
-            </div>
-
-            <!-- Email -->
-            <div class="flex flex-col">
-                <label for="email" class="text-sm font-medium text-gray-600">Email</label>
-                <input type="text" id="email" name="email" readonly value="{{ Auth::user()->email }}"
-                    class="mt-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500">
-            </div>
             <div class="flex flex-col">
                 <label for="email" class="text-sm font-medium text-gray-600">Total Harga</label>
                 <input type="text" id="email" name="email" readonly value="{{ $total }}"

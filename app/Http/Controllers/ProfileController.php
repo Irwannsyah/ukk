@@ -23,6 +23,7 @@ class ProfileController extends Controller
     }
     public function riwayat()
     {
+        $data['user'] = User::where('id', Auth::id())->first();
         $data['paid'] = payment::where('user_id', Auth::id())->get();
         $data['header_title'] = 'Riwayat';
         return view('profile.riwayat', $data);

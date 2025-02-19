@@ -30,11 +30,7 @@
                                             value="{{ old('name', $getSingle->name) }}" required placeholder="Category Name">
                                     </div>
                                     <div class="form-group">
-                                        <label>Current Image</label><br>
-                                        <img class="" src="{{ asset('uploads/' . $getSingle->image) }}" alt="" style="width: 150px">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Update Image</label>
+                                        <label>Image<span style="color: red">*</span></label>
                                         <input type="file" class="form-control" name="image" style="padding: 5px;" accept="image/*">
                                     </div>
                                 </div>

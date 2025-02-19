@@ -38,6 +38,7 @@
                                 </div>
                                 <div class="card-footer">
                                     <button type="submit" class="btn btn-primary">Update</button>
+                                    <button type="button" class="btn btn-secondary col-sm-2" onclick="history.back();">Cancel</button>
                                 </div>
                             </form>
                         </div>

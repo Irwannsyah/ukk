@@ -75,6 +75,7 @@ Route::middleware('admin')->group(function() {
         Route::post('admin/brand/edit/{id}', [BrandController::class, 'update'])->name('update');
         Route::get('admin/brand/delete/{id}', [BrandController::class, 'delete'])->name('delete');
     });
+    Route::get('/admin/users/search', [UserController::class, 'search'])->name('admin.users.search');
 });
 
 Route::get('/pdf/view/{transaction_id}', [PDFController::class, 'index']);

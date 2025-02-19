@@ -50,7 +50,7 @@
                             <div class="icheck-primary">
                                 <input type="checkbox" id="remember" name="remember">
                                 <label for="remember">
-                                    Remember Me
+                                    
                                 </label>
                             </div>
                         </div>
@@ -64,6 +64,9 @@
                 <!-- /.social-auth-links -->
                 <p class="mb-1">
                     <a href="{{ route('user.forgotPassword') }}">I forgot my password</a>
+                </p>
+                <p class="mb-1">
+                    <a href="{{ route('user.register') }}">Register</a>
                 </p>
             </div>
             <!-- /.login-card-body -->

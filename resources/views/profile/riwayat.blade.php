@@ -41,11 +41,20 @@
                                 </td>
                                 <td class="border border-gray-300 px-4 py-2 text-gray-700 text-sm">{{ $pay->visit_date }}
                                 </td>
-                                <td class="border border-gray-300 px-4 py-2 text-gray-700 text-sm">{{ $pay->status }}
+                                <td class="border border-gray-300 px-4 py-2 text-gray-700 text-sm">
+                                    @if ($pay->status == 'settlement')    
+                                    <h2 class="px-4 py-2 bg-green-500 text-white rounded-sm">
+                                        {{ $pay->status }}
+                                    </h2>
+                                    @elseif ($pay->status == 'pending')
+                                        <h2 class="px-4 py-2 bg-yellow-500 text-white rounded-sm">
+                                        {{ $pay->status }}
+                                    </h2>
+                                    @endif
                                 </td>
                                 @if ($pay->status == 'settlement')
                                     <td class="border border-gray-300 px-4 py-2 text-gray-700 text-sm">
-                                        <a href="{{ url('/pdf/view/' . $pay->transaction_id) }}">Inovoice</a>
+                                        <a href="{{ url('/pdf/view/' . $pay->transaction_id) }}" class="bg-green-500 px-4 py-2 rounded-md text-white font-semibold">Inovoice</a>
                                     </td>
                                 @elseif ($pay->status == 'pending')
                                     <td class="border border-gray-300 px-4 py-2 text-gray-700 text-sm">Sedang menunggu

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\destination;
@@ -9,6 +10,7 @@ use App\Models\Gallery;
 use App\Models\payment;
 use App\Models\Review;
 use App\Models\User;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +18,7 @@ class HomepageController extends Controller
 {
     public function dashboard()
     {
-        $userId = Auth::id(); // Ambil ID user yang login
+        $userId = Auth::id();
 
         $data['header_title'] = 'Home Page';
         $data['get_category'] = Category::with('destination')->get();
@@ -28,7 +30,10 @@ class HomepageController extends Controller
                 $dest->is_wishlisted = $dest->wishlist()->where('user_id', $userId)->exists();
                 return $dest;
             });
+        $data['brands'] = Brand::all();
 
+
+        $data['banner'] = Banner::all();
         return view('dashboard', $data);
     }
 
@@ -43,7 +48,7 @@ class HomepageController extends Controller
         return view('auth.register_user', $data);
     }
     public function detail($id){
-
+        $data['count'] = Destination::withCount('wishlist')->find($id);
         $data['Destination'] = destination::with('category', 'gallery_image')->find($id);
         if(!$data['Destination']){
             return redirect()->back()->with('error', 'Destinasi Tidak ditemukan');
@@ -66,6 +71,9 @@ class HomepageController extends Controller
                                 ->where('destination_id', $id)
                                 ->orderBy('created_at', 'desc')
                                 ->get();
+
+        $data['review_count'] = Review::where('destination_id', $id)->count();
+        $data['review_avg'] = Review::where('destination_id', $id)->avg('rating');
         return view('detail', $data);
     }
 

@@ -8,21 +8,11 @@
 @section('content')
     <main class="max-w-screen-xl mx-auto p-4 bg-white min-h-screen font-roboto  rounded-lg my-12">
         <div id="owl-carousel" class="owl-carousel owl-theme flex mb-9">
+            @foreach ($banner as $item)    
             <div class="item">
-                <img src="{{ asset('assets/img/placeholderImg/1504x500.png') }}" alt="Image 1">
+                <img src="{{ asset('uploads/banner/' . $item->image) }}" alt="Image 1">
             </div>
-            <div class="item">
-                <img src="{{ asset('assets/img/placeholderImg/1504x500.png') }}" alt="Image 2">
-            </div>
-            <div class="item">
-                <img src="{{ asset('assets/img/placeholderImg/1504x500.png') }}" alt="Image 3">
-            </div>
-            <div class="item">
-                <img src="{{ asset('assets/img/placeholderImg/1504x500.png') }}" alt="Image 4">
-            </div>
-            <div class="item">
-                <img src="{{ asset('assets/img/placeholderImg/1504x500.png') }}" alt="Image 5">
-            </div>
+            @endforeach
         </div>
 
         <div class="grid grid-cols-3 gap-4 mb-9">
@@ -97,12 +87,6 @@
 
                             <div class="flex items-end justify-between">
                                 <div class="flex items-center gap-1 text-sm">
-                                    <img src="{{ asset('assets/img/star.png') }}" alt="" class="w-4 h-4">
-                                    {{-- Menampilkan rata-rata rating dan jumlah review --}}
-                                    <span class="font-medium">
-                                        {{ $value->wishlist->avg('rating') > 0 ? number_format($value->wishlist->avg('rating'), 1) : 'No rating' }}
-                                    </span>
-                                    <span class="text-gray-500">({{ $value->wishlist->count() }})</span>
                                 </div>
                                 <div class="text-right">
                                     <h5 class="text-sm text-gray-500">Mulai</h5>
@@ -115,7 +99,7 @@
                 @endforeach
             </div>
         </section>
-        {{-- <div class="p-4 bg-white border rounded-xl">
+        <div class="p-4 bg-white border rounded-xl">
             <div id="owl-demo-5" class="owl-carousel gap-2 items-center relative">
                 @foreach ($brands as $value)
                     <div class="w-30 mx-auto">
@@ -124,7 +108,7 @@
                     </div>
                 @endforeach
             </div>
-        </div> --}}
+        </div>
         @if (!empty(session('success')))
             <div id="popup"
                 class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">

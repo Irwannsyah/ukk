@@ -48,12 +48,22 @@ class User extends Authenticatable
         return User::find($id);
     }
 
-    static public function GetUser()
+    public static function GetUser($search = null)
     {
-        return User::select('users.*')
-                        ->where('role', '=', 'user')
-                        ->orderBy('id', 'asc')
-                        ->get();
+        // Query dasar
+        $query = self::select('users.*'); // Sesuaikan dengan kolom yang diperlukan
+
+        // Jika ada pencarian, tambahkan kondisi WHERE
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%')
+                    ->orWhere('phone', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Ambil data
+        return $query->get();
     }
 
     public function payment()
